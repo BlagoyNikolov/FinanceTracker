@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DBManager {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://192.168.3.9:3306/project_blagoy_nikolov";
-    private static final String USERNAME = "blagoy.nikolov";
-    private static final String PASSWORD = "0000";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/finance_tracker";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
     private Connection connection;
 
     private DBManager() {
