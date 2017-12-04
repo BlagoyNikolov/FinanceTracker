@@ -61,9 +61,9 @@ public class PlannedPaymentThread implements Runnable {
 					BigDecimal newValue = this.plannedPayment.getAmount();
 					BigDecimal oldValue = accountDAO.getAmountByAccountId(acc.getAccountId());
 					Transaction t = null;
-					if (this.plannedPayment.getPaymentType().equals(TransactionType.EXPENCE)) {
+					if (this.plannedPayment.getPaymentType().equals(TransactionType.EXPENSE)) {
 						accountDAO.updateAccountAmount(acc, oldValue.subtract(newValue));
-						t = new Transaction(TransactionType.EXPENCE, "Planned Payment Expense", this.plannedPayment.getAmount(), this.plannedPayment.getAccount(), this.plannedPayment.getCategory(), LocalDateTime.now(), this.plannedPayment.getTags());
+						t = new Transaction(TransactionType.EXPENSE, "Planned Payment Expense", this.plannedPayment.getAmount(), this.plannedPayment.getAccount(), this.plannedPayment.getCategory(), LocalDateTime.now(), this.plannedPayment.getTags());
 					} else 
 					if (this.plannedPayment.getPaymentType().equals(TransactionType.INCOME)) {
 						accountDAO.updateAccountAmount(acc, oldValue.add(newValue));

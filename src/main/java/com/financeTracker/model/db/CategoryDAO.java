@@ -49,7 +49,7 @@ public class CategoryDAO {
 	}
 	
 	public synchronized String getCategoryNameByCategoryId(long categoryId) throws SQLException {
-		String query = "SELECT name FROM finance_tracker.categories WHERE category_id = ?";
+		String query = "SELECT name FROM categories WHERE category_id = ?";
 		PreparedStatement ps = dbManager.getConnection().prepareStatement(query);
 		ps.setLong(1, categoryId);
 		
@@ -126,7 +126,7 @@ public class CategoryDAO {
 	}
 
 	public Category getCategoryByCategoryName(String categoryName) throws SQLException {
-		String query = "SELECT category_id, name, type, user_id FROM finance_tracker.categories WHERE name = ?";
+		String query = "SELECT category_id, name, type, user_id FROM categories WHERE name = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setString(1, categoryName);
 		
@@ -149,7 +149,7 @@ public class CategoryDAO {
 	
 	public synchronized Set<String> getAllCategoriesByType(long userId, String type) throws SQLException {
 		Set<String> categoriesNames = new HashSet<String>();
-		String query = "SELECT name, user_id, type FROM finance_tracker.categories WHERE (user_id = ? OR user_id IS NULL) AND type = ?";
+		String query = "SELECT name, user_id, type FROM categories WHERE (user_id = ? OR user_id IS NULL) AND type = ?";
 		PreparedStatement ps = dbManager.getConnection().prepareStatement(query);
 		ps.setLong(1, userId);
 		ps.setString(2, type);

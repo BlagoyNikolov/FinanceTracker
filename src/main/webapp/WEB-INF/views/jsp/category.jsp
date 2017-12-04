@@ -40,7 +40,7 @@
 		                <div class="form-group">
 			                <label>Type</label>
 			                <f:select cssClass="form-control select2" placeholder="Select a type" name="type" path="type" >
-			                  <option>EXPENCE</option>
+			                  <option>EXPENSE</option>
 			                  <option>INCOME</option>
 			                </f:select>
 			                

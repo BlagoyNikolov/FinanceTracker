@@ -42,7 +42,7 @@
 				<div class="row"> 
 					<div class="col-md-4" style="width: 50%">
 						
-						<div class="info-box" style="background-color: khaki" >
+						<div class="info-box" style="background-color: white" >
 				            <a href="budgets/${ budget.key.budgetId }" style="color: #FFFFFF; text-decoration: none !important; margin-bottom: 0px">
 								<span class="info-box-icon"><i class="ion ion-information-circled" style="margin-top: 20px"></i></span>
 							</a>
@@ -57,7 +57,7 @@
 				      		  		<div class="progress-bar" style="height: 10px; background-color: red; width: <c:out value = "${ percent }"/>%"></div>
 				      		  	</c:if>
 				                <c:if test="${ percent < 100 }">
-				                	<div class="progress-bar" style="height: 10px; background-color: #75FF33; width: <c:out value = "${ percent }"/>%"></div>
+				                	<div class="progress-bar" style="height: 10px; background-color: green; width: <c:out value = "${ percent }"/>%"></div>
 			                	</c:if>
 				              </div>
 				              <div class="row">

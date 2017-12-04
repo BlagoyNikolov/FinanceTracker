@@ -45,9 +45,6 @@
 					<div class="col-sm-3">
 						<a href="<c:url value="/main"></c:url>" type="button" class="btn btn-block btn-default btn-lg"><i class="ion ion-android-arrow-back"></i> Back</a>
 					</div>
-					<div class="col-sm-3">
-						<a href="<c:url value="/main"></c:url>" type="button" class="btn btn-block btn-default btn-lg"><i class="fa fa-file-pdf-o"></i> Export data to PDF</a>
-					</div>
 				</div>
 			</div>
 			
@@ -78,7 +75,7 @@
 			                <label>Type</label>
 			                <select class="form-control select2" style="width: 100%;" data-placeholder="Select a type" name="type" onchange="myFunction()" id="type" >
 			                  <option>All types</option>
-			                  <option>EXPENCE</option>
+			                  <option>EXPENSE</option>
 			                  <option>INCOME</option>
 			                  
 			                </select>
@@ -139,7 +136,7 @@
 							              <c:when test="${transaction.type eq 'INCOME'}">
 							              	<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
 							              </c:when>
-							              <c:when test="${transaction.type eq 'EXPENCE'}">
+							              <c:when test="${transaction.type eq 'EXPENSE'}">
 							              	<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
 							              </c:when>
 							              <c:otherwise>
@@ -192,7 +189,7 @@
 				}
 		    };
 		    
-		    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
+		    request.open("GET", "http://localhost:8080/account/getCategory/"+sel);
 		    request.send();
 		}
 		

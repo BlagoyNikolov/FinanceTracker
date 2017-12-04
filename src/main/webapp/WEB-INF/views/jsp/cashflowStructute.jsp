@@ -68,7 +68,7 @@
 				        	<label>Type</label>
 							<select class="form-control select2" style="width: 100%;" data-placeholder="Select a type" name="type">
 								<option></option>
-				                  <option>EXPENCE</option>
+				                  <option>EXPENSE</option>
 				                  <option>INCOME</option>
 		                    </select>
 		                </div>

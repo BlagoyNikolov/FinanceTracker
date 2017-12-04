@@ -35,7 +35,7 @@ public class PlannedPaymentDAO {
 	private TagDAO tagDAO;
 	
 	public synchronized List<PlannedPayment> getAllPlannedPayments() throws SQLException {
-		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM finance_tracker.planned_payments";
+		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM planned_payments";
 		List<PlannedPayment> payments = new ArrayList<PlannedPayment>();
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
@@ -62,7 +62,7 @@ public class PlannedPaymentDAO {
 	}
 	
 	public synchronized List<PlannedPayment> getAllPlannedPaymentsByAccountId(long accountId) throws SQLException {
-		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM finance_tracker.planned_payments WHERE account_id = ?";
+		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM planned_payments WHERE account_id = ?";
 		List<PlannedPayment> payments = new ArrayList<PlannedPayment>();
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
@@ -89,7 +89,7 @@ public class PlannedPaymentDAO {
 	
 	public synchronized List<PlannedPayment> getAllPlannedPaymentsByCategoryId(long categoryId) throws SQLException {
 		List<PlannedPayment> payments = new ArrayList<PlannedPayment>();
-		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM finance_tracker.planned_payments WHERE category_id = ?";
+		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM planned_payments WHERE category_id = ?";
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, categoryId);
@@ -117,7 +117,7 @@ public class PlannedPaymentDAO {
 		dbManager.getConnection().setAutoCommit(false);
 		
 		try {
-			String query = "INSERT INTO finance_tracker.planned_payments (name, type, from_date, amount, description, account_id, category_id) VALUES (?, ?, STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), ?, ?, ?, ?)";
+			String query = "INSERT INTO planned_payments (name, type, from_date, amount, description, account_id, category_id) VALUES (?, ?, STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), ?, ?, ?, ?)";
 			PreparedStatement statement = dbManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, p.getName());
 			statement.setString(2, p.getPaymentType().toString());
@@ -145,7 +145,7 @@ public class PlannedPaymentDAO {
 	}
 	
 	public synchronized void updatePlannedPayment(PlannedPayment p) throws SQLException {
-		String query = "UPDATE finance_tracker.planned_payments SET name = ?, type = ?, from_date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), amount = ?, description = ?, account_id = ?, category_id = ? WHERE planned_payment_id = ?";
+		String query = "UPDATE planned_payments SET name = ?, type = ?, from_date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), amount = ?, description = ?, account_id = ?, category_id = ? WHERE planned_payment_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setString(1, p.getName());
 		statement.setString(2, p.getPaymentType().toString());
@@ -169,7 +169,7 @@ public class PlannedPaymentDAO {
 		try {
 			tagDAO.deleteAllTagsForPlannedPayment(plannedPaymentId);
 			
-			String query = "DELETE FROM finance_tracker.planned_payments WHERE planned_payment_id = ?";
+			String query = "DELETE FROM planned_payments WHERE planned_payment_id = ?";
 		
 			PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 			statement.setLong(1, plannedPaymentId);
@@ -184,7 +184,7 @@ public class PlannedPaymentDAO {
 	}
 
 	public PlannedPayment getPlannedPaymentByPlannedPaymentId(Long plannedPaymentId) throws SQLException {
-		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM finance_tracker.planned_payments WHERE planned_payment_id = ?";
+		String query = "SELECT planned_payment_id, name, type, from_date, amount, description, account_id, category_id FROM planned_payments WHERE planned_payment_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, plannedPaymentId);
 		statement.executeQuery();
@@ -209,8 +209,8 @@ public class PlannedPaymentDAO {
 	
 	public List<PlannedPayment> getAllPlannedPaymentsByUserId(long userId) throws SQLException {
 		String query = "SELECT planned_payment_id, p.name, p.type, p.from_date, p.amount, p.description, p.account_id, p.category_id "
-				+ "FROM finance_tracker.planned_payments p "
-				+ "JOIN finance_tracker.accounts a ON p.account_id = a.account_id AND user_id = ?;";
+				+ "FROM project_blagoy_nikolov.planned_payments p "
+				+ "JOIN project_blagoy_nikolov.accounts a ON p.account_id = a.account_id AND user_id = ?;";
 		List<PlannedPayment> payments = new ArrayList<PlannedPayment>();
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);

@@ -21,7 +21,7 @@ public class TagDAO {
 	private DBManager dbManager;
 	
 	public Tag getTagByTagId(long tagId) throws SQLException {
-		String query = "SELECT name, user_id FROM finance_tracker.tags WHERE finance_tracker.tags.tag_id = ?";
+		String query = "SELECT name, user_id FROM tags WHERE finance_tracker.tags.tag_id = ?";
 		Tag tag = null;
 		PreparedStatement statement = null;
 		statement = dbManager.getConnection().prepareStatement(query);
@@ -36,7 +36,7 @@ public class TagDAO {
 	}
 	
 	public synchronized void insertTagToTags(Tag tag, long userId) throws SQLException {
-		String query = "INSERT INTO finance_tracker.tags (name, user_id) VALUES (?, ?)";
+		String query = "INSERT INTO tags (name, user_id) VALUES (?, ?)";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, tag.getName());
 		statement.setLong(2, userId);
@@ -49,7 +49,7 @@ public class TagDAO {
 	
 	public HashSet<Tag> getTagsByTransactionId(long transactionId) throws SQLException {
 		HashSet<Tag> tags = new HashSet<Tag>();
-		String query = "SELECT tag_id, transaction_id FROM finance_tracker.transactions_has_tags WHERE transaction_id = ?";
+		String query = "SELECT tag_id, transaction_id FROM transactions_has_tags WHERE transaction_id = ?";
 		
 		PreparedStatement statement = null;
 		statement = dbManager.getConnection().prepareStatement(query);
@@ -64,7 +64,7 @@ public class TagDAO {
 	}
 	
 	public void insertTagToTransaction(Transaction t, Tag tag) throws SQLException {
-		String query = "INSERT INTO finance_tracker.transactions_has_tags (transaction_id, tag_id) VALUES (?, ?)";
+		String query = "INSERT INTO transactions_has_tags (transaction_id, tag_id) VALUES (?, ?)";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, t.getTransactionId());
 		statement.setLong(2, tag.getTagId());
@@ -73,7 +73,7 @@ public class TagDAO {
 
 	public HashSet<Tag> getTagsByBudgetId(long budgetId) throws SQLException {
 		HashSet<Tag> tags = new HashSet<Tag>();
-		String query = "SELECT budget_id, tag_id FROM finance_tracker.budgets_has_tags WHERE budget_id = ?";
+		String query = "SELECT budget_id, tag_id FROM budgets_has_tags WHERE budget_id = ?";
 		
 		PreparedStatement statement = null;
 		statement = dbManager.getConnection().prepareStatement(query);
@@ -88,7 +88,7 @@ public class TagDAO {
 	}
 	
 	public synchronized void insertTagToBudget(Budget b, Tag tag) throws SQLException {
-		String query = "INSERT INTO finance_tracker.budgets_has_tags (budget_id, tag_id) VALUES (?, ?)";
+		String query = "INSERT INTO budgets_has_tags (budget_id, tag_id) VALUES (?, ?)";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, b.getBudgetId());
 		statement.setLong(2, tag.getTagId());
@@ -97,7 +97,7 @@ public class TagDAO {
 
 	public HashSet<Tag> getTagsByPlannedPaymentId(long plannedPaymentId) throws SQLException {
 		HashSet<Tag> tags = new HashSet<Tag>();
-		String query = "SELECT planned_payment_id, tag_id FROM finance_tracker.planned_payments_has_tags WHERE planned_payment_id = ?";
+		String query = "SELECT planned_payment_id, tag_id FROM planned_payments_has_tags WHERE planned_payment_id = ?";
 		
 		PreparedStatement statement = null;
 		statement = dbManager.getConnection().prepareStatement(query);
@@ -112,7 +112,7 @@ public class TagDAO {
 	}
 	
 	public void insertTagToPlannedPayment(PlannedPayment p, Tag tag) throws SQLException {
-		String query = "INSERT INTO finance_tracker.planned_payments_has_tags (planned_payment_id, tag_id) VALUES (?, ?)";
+		String query = "INSERT INTO planned_payments_has_tags (planned_payment_id, tag_id) VALUES (?, ?)";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, p.getPlannedPaymentId());
 		statement.setLong(2, tag.getTagId());
@@ -150,14 +150,14 @@ public class TagDAO {
 	}
 
 	public void deleteAllTagsForTransaction(long transactionId) throws SQLException {
-		String query = "DELETE FROM finance_tracker.transactions_has_tags WHERE transaction_id = ?;";
+		String query = "DELETE FROM transactions_has_tags WHERE transaction_id = ?;";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, transactionId);
 		statement.executeUpdate();
 	}
 
 	public void deleteAllTagsForPlannedPayment(long plannedPaymentId) throws SQLException {
-		String query = "DELETE FROM finance_tracker.planned_payments_has_tags WHERE planned_payment_id = ?;";
+		String query = "DELETE FROM planned_payments_has_tags WHERE planned_payment_id = ?;";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, plannedPaymentId);
 		statement.executeUpdate();
