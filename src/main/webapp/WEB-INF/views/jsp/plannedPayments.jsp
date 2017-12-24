@@ -60,7 +60,7 @@
 											<c:when test="${payment.paymentType eq 'INCOME'}">
 												<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${payment.amount}" minFractionDigits="2"/></h3>
 											</c:when>
-											<c:when test="${payment.paymentType eq 'EXPENCE'}">
+											<c:when test="${payment.paymentType eq 'EXPENSE'}">
 												<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${payment.amount}" minFractionDigits="2"/></h3>
 											</c:when>
 											<c:otherwise>

@@ -9,7 +9,7 @@
 	<packaging>war</packaging>
 
 	<name>FinanceTracker</name>
-	<description>FInance Tracker Spring MVC Web App</description>
+	<description>Finance Tracker Spring MVC Web App</description>
 
 <repositories>
     <repository>

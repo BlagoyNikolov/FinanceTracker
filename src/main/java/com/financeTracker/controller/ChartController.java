@@ -52,7 +52,7 @@ public class ChartController {
 		
 		try {
 			accounts = accountDAO.getAllAccountsByUserId(u.getUserId());
-			transactionCategories = transactionDAO.getAllCategoriesAndTheirAmountsByUserId(u.getUserId(), "EXPENCE");
+			transactionCategories = transactionDAO.getAllCategoriesAndTheirAmountsByUserId(u.getUserId(), "EXPENSE");
 		} catch (SQLException e) {
 			return "error500";
 		}

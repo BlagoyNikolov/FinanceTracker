@@ -52,13 +52,13 @@ public class TransactionDAO {
 
 	@PostConstruct
 	private void init() throws SQLException {
-		ALL_TRANSACTIONS.put(TransactionType.EXPENCE, new ArrayList<>());
+		ALL_TRANSACTIONS.put(TransactionType.EXPENSE, new ArrayList<>());
 		ALL_TRANSACTIONS.put(TransactionType.INCOME, new ArrayList<>());
 		getAllTransactions();
 	}
 	
 	public synchronized void getAllTransactions() throws SQLException {
-		String query = "SELECT transaction_id, type, date, description, amount, account_id, category_id FROM finance_tracker.transactions";
+		String query = "SELECT transaction_id, type, date, description, amount, account_id, category_id FROM transactions";
 		PreparedStatement statement = null;
 		statement = dbManager.getConnection().prepareStatement(query);
 		ResultSet result = statement.executeQuery();
@@ -81,7 +81,7 @@ public class TransactionDAO {
 
 	public synchronized List<Transaction> getAllTransactionsByAccountId(long accountId) throws SQLException {
 		List<Transaction> transactions = new ArrayList<Transaction>();
-		String query = "SELECT transaction_id, type, date, description, amount, account_id, category_id FROM finance_tracker.transactions WHERE account_id = ?";
+		String query = "SELECT transaction_id, type, date, description, amount, account_id, category_id FROM transactions WHERE account_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, accountId);
 		ResultSet result = statement.executeQuery();
@@ -140,7 +140,7 @@ public class TransactionDAO {
 	}
 	
 	public synchronized void insertTransaction(Transaction t) throws SQLException {
-		String query = "INSERT INTO finance_tracker.transactions (type, date, amount, description, account_id, category_id) VALUES (?, STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), ?, ?, ?, ?)";
+		String query = "INSERT INTO transactions (type, date, amount, description, account_id, category_id) VALUES (?, STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), ?, ?, ?, ?)";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, t.getType().toString());
 		statement.setTimestamp(2, Timestamp.valueOf(t.getDate().withNano(0)));
@@ -167,7 +167,7 @@ public class TransactionDAO {
 			if (existsBudget) {
 				for (Budget budget : budgets) {
 					budgetsHasTransactionsDAO.insertTransactionBudget(budget.getBudgetId(), t.getTransactionId());
-					if (t.getType().equals(TransactionType.EXPENCE)) {
+					if (t.getType().equals(TransactionType.EXPENSE)) {
 						budget.setAmount(budget.getAmount().add(t.getAmount()));
 					}
 					budgetDao.updateBudget(budget);
@@ -188,7 +188,7 @@ public class TransactionDAO {
 	}
 	
 	public synchronized void updateTransaction(Transaction t) throws SQLException {
-		String query = "UPDATE finance_tracker.transactions SET type = ?, date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), amount = ?, description = ?, account_id = ?, category_id = ? WHERE transaction_id = ?";
+		String query = "UPDATE transactions SET type = ?, date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), amount = ?, description = ?, account_id = ?, category_id = ? WHERE transaction_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setString(1, t.getType().toString());
 		statement.setTimestamp(2, Timestamp.valueOf(t.getDate().withNano(0)));
@@ -230,7 +230,7 @@ public class TransactionDAO {
 
 			tagDAO.deleteAllTagsForTransaction(t.getTransactionId());
 			
-			String query = "DELETE FROM finance_tracker.transactions WHERE transaction_id = ?";
+			String query = "DELETE FROM transactions WHERE transaction_id = ?";
 			PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 			statement.setLong(1, t.getTransactionId());
 			statement.executeUpdate();
@@ -275,7 +275,7 @@ public class TransactionDAO {
 			TransactionType type = TransactionType.valueOf(res.getString("type"));
 			LocalDateTime date = res.getTimestamp("date").toLocalDateTime();
 			
-			if (type.equals(TransactionType.EXPENCE) && isBetweenTwoDates(date, fromDate, toDate)) {
+			if (type.equals(TransactionType.EXPENSE) && isBetweenTwoDates(date, fromDate, toDate)) {
 				return true;
 			}
 		}
@@ -306,7 +306,7 @@ public class TransactionDAO {
 			String description = res.getString("description");
 			BigDecimal amount = res.getBigDecimal("amount");
 			
-			if (type.equals(TransactionType.EXPENCE) && isBetweenTwoDates(date, fromDate, toDate)) {
+			if (type.equals(TransactionType.EXPENSE) && isBetweenTwoDates(date, fromDate, toDate)) {
 				Transaction t = new Transaction(transactionId, type, description, amount, accountId, categoryId, date, null);
 				
 				transactions.add(t);
@@ -318,7 +318,7 @@ public class TransactionDAO {
 
 	public List<Transaction> getAllTransactionsByUserId(long userId) throws SQLException {
 		List<Transaction> transactions = new ArrayList<Transaction>();
-		String query = "SELECT t.type, t.date, t.amount, t.account_id, t.category_id FROM finance_tracker.transactions t JOIN  finance_tracker.accounts a ON t.account_id = a.account_id WHERE a.user_id = ?";
+		String query = "SELECT t.type, t.date, t.amount, t.account_id, t.category_id FROM transactions t JOIN  project_blagoy_nikolov.accounts a ON t.account_id = a.account_id WHERE a.user_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, userId);
 		
@@ -338,7 +338,7 @@ public class TransactionDAO {
 	
 	public TreeMap<String, BigDecimal> getAllCategoriesAndTheirAmountsByUserId(long userId, String type) throws SQLException {
 		TreeMap<String, BigDecimal> categories = new TreeMap<String, BigDecimal>();
-		String query = "SELECT SUM(t.amount) as amount, t.category_id FROM finance_tracker.transactions t JOIN finance_tracker.accounts a ON t.account_id = a.account_id JOIN finance_tracker.categories c on t.category_id = c.category_id WHERE (a.user_id = ? AND c.type = ?) group by category_id;";
+		String query = "SELECT SUM(t.amount) as amount, t.category_id FROM transactions t JOIN project_blagoy_nikolov.accounts a ON t.account_id = a.account_id JOIN project_blagoy_nikolov.categories c on t.category_id = c.category_id WHERE (a.user_id = ? AND c.type = ?) group by category_id;";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, userId);
 		statement.setString(2, type);
@@ -387,9 +387,9 @@ public class TransactionDAO {
 	public TreeMap<String, BigDecimal> getAllTransactionsByUserDateTypeAccount(long userId, LocalDateTime dateFrom, LocalDateTime dateTo, String type, String account) throws SQLException {
 		TreeMap<String, BigDecimal> transactions = new TreeMap<String, BigDecimal>();
 		String query = "SELECT t.category_id, SUM(t.amount) AS amount \r\n" + 
-				"FROM finance_tracker.transactions t \r\n" + 
-				"JOIN finance_tracker.accounts a ON t.account_id = a.account_id \r\n" + 
-				"JOIN finance_tracker.categories c on t.category_id = c.category_id \r\n" + 
+				"FROM project_blagoy_nikolov.transactions t \r\n" +
+				"JOIN project_blagoy_nikolov.accounts a ON t.account_id = a.account_id \r\n" +
+				"JOIN project_blagoy_nikolov.categories c on t.category_id = c.category_id \r\n" +
 				"WHERE (a.user_id = ? AND c.type = ? AND (t.date BETWEEN ? AND ?) " + (account.equals("All accounts") ? ")" : "AND a.account_id = ? )") + 
 				"group by category_id;";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
@@ -418,7 +418,7 @@ public class TransactionDAO {
 	public Map<String, BigDecimal> getIncomeVsExpences(long userId, long accountId, LocalDateTime ... dateArr) throws SQLException{
 		Map<String, BigDecimal> result = new HashMap<>();
 		result.put("INCOME", BigDecimal.valueOf(0));
-		result.put("EXPENCE", BigDecimal.valueOf(0));
+		result.put("EXPENSE", BigDecimal.valueOf(0));
 		
 		String sql = "SELECT t.type, t.amount "
 				+ "FROM transactions t "
@@ -493,9 +493,9 @@ public class TransactionDAO {
 			LocalDateTime date = res.getTimestamp("date").toLocalDateTime();
 			
 			if (!map.containsKey(date.toLocalDate())) {
-				map.put(date.toLocalDate(), type.equals("EXPENCE") ? amount.negate() : amount);
+				map.put(date.toLocalDate(), type.equals("EXPENSE") ? amount.negate() : amount);
 			} else {
-				map.put(date.toLocalDate(), map.get(date.toLocalDate()).add(type.equals("EXPENCE") ? amount.negate() : amount));
+				map.put(date.toLocalDate(), map.get(date.toLocalDate()).add(type.equals("EXPENSE") ? amount.negate() : amount));
 			}
 		}
 		

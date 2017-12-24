@@ -1,5 +1,6 @@
 package com.financeTracker.controller;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
@@ -143,7 +144,7 @@ public class TransactionController {
 			Transaction t = new Transaction(TransactionType.valueOf(type), transaction.getDescription(), BigDecimal.valueOf(Double.valueOf(amount)), acc.getAccountId(), cat.getCategoryId(), LocalDateTime.now(), tagsSet);
 			BigDecimal newValue = BigDecimal.valueOf(Double.valueOf(amount));
 			BigDecimal oldValue = accountDAO.getAmountByAccountId((int)acc.getAccountId());
-			if (type.equals("EXPENCE")) {
+			if (type.equals("EXPENSE")) {
 				accountDAO.updateAccountAmount(acc, (oldValue.subtract(newValue)));
 			} else 
 			if (type.equals("INCOME")) {
@@ -263,7 +264,7 @@ public class TransactionController {
 			t.setTransactionId(transactionId);
 			BigDecimal newValue = BigDecimal.valueOf(Double.valueOf(amount));
 			BigDecimal oldValue = accountDAO.getAmountByAccountId((int)acc.getAccountId());
-			if (type.equals("EXPENCE")) {
+			if (type.equals("EXPENSE")) {
 				accountDAO.updateAccountAmount(acc, (oldValue.subtract(newValue)));
 			} else 
 			if (type.equals("INCOME")) {
@@ -337,7 +338,7 @@ public class TransactionController {
 			from = accountDAO.getAccountByAccountNameAndAccountId(fromAccount, user.getUserId());
 			to = accountDAO.getAccountByAccountNameAndAccountId(toAccount, user.getUserId());
 			transferCategory = categoryDao.getCategoryByCategoryName("Transfer");
-			Transaction t1 = new Transaction(TransactionType.EXPENCE, LocalDateTime.now(), amount, from.getAccountId(), transferCategory.getCategoryId());
+			Transaction t1 = new Transaction(TransactionType.EXPENSE, LocalDateTime.now(), amount, from.getAccountId(), transferCategory.getCategoryId());
 			t1.setDescription("Transfer to account " + to.getName());
 			Transaction t2 = new Transaction(TransactionType.INCOME, LocalDateTime.now(), amount, to.getAccountId(), transferCategory.getCategoryId());
 			t2.setDescription("Transfer from account " + from.getName());
@@ -348,7 +349,7 @@ public class TransactionController {
 		} catch (SQLException e) {
 			//return "error500";
 		}
-		
+
 		return "redirect:/account/" + from.getAccountId();
 	}
 	
@@ -364,7 +365,7 @@ public class TransactionController {
 			
 			BigDecimal newValue = t.getAmount();
 			BigDecimal oldValue = accountDAO.getAmountByAccountId(t.getAccount());
-			if (t.getType().equals(TransactionType.EXPENCE)) {
+			if (t.getType().equals(TransactionType.EXPENSE)) {
 				accountDAO.updateAccountAmount(acc, (oldValue.add(newValue)));
 			} else 
 			if (t.getType().equals(TransactionType.INCOME)) {

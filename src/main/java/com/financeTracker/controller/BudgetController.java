@@ -99,7 +99,7 @@ public class BudgetController {
 		
 		try {
 			Set<Account> accounts = accountDAO.getAllAccountsByUserId(user.getUserId());
-			Set<String> categories = categoryDao.getAllCategoriesByType(user.getUserId(), "EXPENCE");
+			Set<String> categories = categoryDao.getAllCategoriesByType(user.getUserId(), "EXPENSE");
 			Set<Tag> tags = tagDAO.getAllTagsByUserId(user.getUserId());
 			
 			model.addAttribute("accounts", accounts);

@@ -34,7 +34,7 @@ public class BudgetDAO {
 	private TransactionDAO transactionDAO;
 
 	public synchronized void getAllBudgets() throws SQLException {
-		String query = "SELECT budget_id, name, initial_amount, amount, from_date, to_date, account_id, category_id FROM finance_tracker.budgets";
+		String query = "SELECT budget_id, name, initial_amount, amount, from_date, to_date, account_id, category_id FROM budgets";
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		
@@ -59,7 +59,7 @@ public class BudgetDAO {
 	}
 	
 	public synchronized List<Budget> getAllBudgetsByAccountId(long accountId) throws SQLException {
-		String query = "SELECT budget_id, name, initial_amount, amount, from_date, to_date, category_id FROM finance_tracker.budgets WHERE account_id = ?";
+		String query = "SELECT budget_id, name, initial_amount, amount, from_date, to_date, category_id FROM budgets WHERE account_id = ?";
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, accountId);
@@ -88,7 +88,7 @@ public class BudgetDAO {
 	}
 	
 	public synchronized List<Budget> getAllBudgetsByCategoryId(long categoryId) throws SQLException {
-		String sql = "SELECT budget_id, name, initial_amount, amount, from_date, to_date, account_id FROM finance_tracker.budgets WHERE category_id = ?;";
+		String sql = "SELECT budget_id, name, initial_amount, amount, from_date, to_date, account_id FROM budgets WHERE category_id = ?;";
 		
 		PreparedStatement ps = dbManager.getConnection().prepareStatement(sql);
 		ps.setLong(1, categoryId);
@@ -170,7 +170,7 @@ public class BudgetDAO {
 	}
 	
 	public synchronized void updateBudget(Budget b) throws SQLException {
-		String sql = "UPDATE finance_tracker.budgets SET name = ?, initial_amount = ?, amount = ?, from_date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), to_date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), account_id = ?, category_id = ? WHERE budget_id = ?";
+		String sql = "UPDATE budgets SET name = ?, initial_amount = ?, amount = ?, from_date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), to_date = STR_TO_DATE(?, '%Y-%m-%d %H:%i:%s'), account_id = ?, category_id = ? WHERE budget_id = ?";
 		
 		PreparedStatement ps = dbManager.getConnection().prepareStatement(sql);
 		ps.setString(1, b.getName());
@@ -194,7 +194,7 @@ public class BudgetDAO {
 			
 			tagDAO.deleteAllTagsForBydget(b.getBudgetId());
 			
-			String query = "DELETE FROM finance_tracker.budgets WHERE budget_id = ?";
+			String query = "DELETE FROM budgets WHERE budget_id = ?";
 			PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 			statement.setLong(1, b.getBudgetId());
 			statement.executeUpdate();

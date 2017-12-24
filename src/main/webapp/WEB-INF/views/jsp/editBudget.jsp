@@ -86,8 +86,6 @@
 			                </select>
 			                <c:set var="tags" value="${ tagNames }" />
 			                <script type="text/javascript">
-				           		var values="Test,Prof,Off";
-				           		var values = 'Alaska'
 				            	var values = '${tags}';
 				            	
 				            	values = values.replace(/[\[\]']+/g,'')

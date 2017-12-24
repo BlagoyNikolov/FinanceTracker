@@ -57,7 +57,7 @@
 				      		  		<div class="progress-bar" style="height: 10px; background-color: red; width: <c:out value = "${ percent }"/>%"></div>
 				      		  	</c:if>
 				                <c:if test="${ percent < 100 }">
-				                	<div class="progress-bar" style="height: 10px; background-color: #75FF33; width: <c:out value = "${ percent }"/>%"></div>
+				                	<div class="progress-bar" style="height: 10px; background-color: green; width: <c:out value = "${ percent }"/>%"></div>
 			                	</c:if>
 				              </div>
 				              <div class="row">

@@ -79,10 +79,10 @@
 						    	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Badge_js-strict.svg/1000px-Badge_js-strict.svg.png" alt="JS" width="180" height="auto">   
 						    </div>
 						    <div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-						    	<img src="http://bradsknutson.com/wp-content/themes/bradsknutson/images/css3.png" alt="CSS" width="180" height="auto">   
+						    	<img src="http://w3widgets.com/responsive-slider/img/css3.png" alt="CSS" width="180" height="auto">
 						    </div>
 						    <div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-						    	<img src="http://bradsknutson.com/wp-content/themes/bradsknutson/images/html5.png" alt="HTML" width="250" height="auto">   
+						    	<img src="https://www.w3.org/html/logo/downloads/HTML5_Logo_512.png" alt="HTML" width="250" height="auto">
 						    </div>
 						</div>
 					</div>
@@ -92,8 +92,7 @@
 							<img src="http://ittalents.bg/images/logo-black.png" alt="ITT">
 						</div>
 						<div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-							<img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAUfAAAAJDhlM2JlNDI1LTljMTEtNGEyNS1iMjM3LTE3MTBmOWQ2YTY0MA.jpg" alt="Krasity" style="border-radius: 50%; box-shadow: 0px 0px 15px black;">
-							<h3>IT Talents Trainer Krasimir Stoev</h3>
+							<img src="https://www.jobs.bg/assets/logo/2017-03-01/b_06dcf95edbe4d9fade7e104654bbd523.png" alt="UX" width="400" height="auto">
 						</div>
 					</div>
 					<!-- /.box-body -->

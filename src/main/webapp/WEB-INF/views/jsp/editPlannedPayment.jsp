@@ -50,7 +50,7 @@
 			                	<label>Type</label>
 			                	<select class="form-control select2" style="width: 100%;" data-placeholder="Select a type" name="type" onchange="myFunction()" id="typ" >
 			                  		<option selected="selected"><c:out value="${ editPlannedPaymentType }"></c:out></option>
-			                  		<option>EXPENCE</option>
+			                  		<option>EXPENSE</option>
 			                  		<option>INCOME</option>
 			                  		
 			                  		 <script>
@@ -71,7 +71,7 @@
 												}
 										    };
 										    
-										    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
+										    request.open("GET", "http://localhost:8080/account/getCategory/"+sel);
 										    request.send();
 										}
 							  </script>

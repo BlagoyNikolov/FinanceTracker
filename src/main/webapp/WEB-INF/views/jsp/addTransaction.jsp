@@ -40,7 +40,7 @@
 			                <%-- <f:select path="type" cssClass="form-control select2" cssStyle="width: 100%;" data-placeholder="Select a type" name="type" id="typ" onchange="myFunction()"> --%>
 			                <select class="form-control select2" style="width: 100%;" data-placeholder="Select a type" name="type" onchange="myFunction()" id="typ" >
 			                  <option></option>
-			                  <option>EXPENCE</option>
+			                  <option>EXPENSE</option>
 			                  <option>INCOME</option>
 			                  
 			                  <script>
@@ -61,7 +61,7 @@
 										}
 								    };
 								    
-								    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
+								    request.open("GET", "http://localhost:8080/account/getCategory/"+sel);
 								    request.send();
 								}
 							  </script>
@@ -86,7 +86,7 @@
 			                </select>
 			            </div>
 			            <div class="form-group">
-							<a href="<c:url value="/addCategory"></c:url>" type="button" class="btn btn-block btn-default" style="width: 30%;"><i class="ion ion-plus" name="link"></i> Add new category'
+							<a href="<c:url value="/addCategory"></c:url>" type="button" class="btn btn-block btn-default" style="width: 30%;"><i class="ion ion-plus" name="link"></i> Add new category
 								<input type="hidden" name="link" value="addTransaction">
 							</a>
 						</div>

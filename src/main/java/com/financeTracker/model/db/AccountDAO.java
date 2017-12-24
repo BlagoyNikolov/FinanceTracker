@@ -223,7 +223,7 @@ public class AccountDAO {
 	}
 	
 	public Account getAccountByAccountNameAndAccountId(String accountName, long userId) throws SQLException {
-		String query = "SELECT account_id, name, amount, user_id FROM finance_tracker.accounts WHERE accounts.name = ? AND user_id = ?";
+		String query = "SELECT account_id, name, amount, user_id FROM accounts WHERE accounts.name = ? AND user_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setString(1, accountName);
 		statement.setLong(2, userId);

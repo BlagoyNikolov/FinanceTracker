@@ -70,7 +70,7 @@
 						              <c:when test="${transaction.type eq 'INCOME'}">
 						              	<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
 						              </c:when>
-						              <c:when test="${transaction.type eq 'EXPENCE'}">
+						              <c:when test="${transaction.type eq 'EXPENSE'}">
 						              	<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
 						              </c:when>
 						              <c:otherwise>
