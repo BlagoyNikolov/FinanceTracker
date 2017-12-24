@@ -318,7 +318,7 @@ public class TransactionDAO {
 
 	public List<Transaction> getAllTransactionsByUserId(long userId) throws SQLException {
 		List<Transaction> transactions = new ArrayList<Transaction>();
-		String query = "SELECT t.type, t.date, t.amount, t.account_id, t.category_id FROM transactions t JOIN  project_blagoy_nikolov.accounts a ON t.account_id = a.account_id WHERE a.user_id = ?";
+		String query = "SELECT t.type, t.date, t.amount, t.account_id, t.category_id FROM transactions t JOIN  accounts a ON t.account_id = a.account_id WHERE a.user_id = ?";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, userId);
 		
@@ -338,7 +338,7 @@ public class TransactionDAO {
 	
 	public TreeMap<String, BigDecimal> getAllCategoriesAndTheirAmountsByUserId(long userId, String type) throws SQLException {
 		TreeMap<String, BigDecimal> categories = new TreeMap<String, BigDecimal>();
-		String query = "SELECT SUM(t.amount) as amount, t.category_id FROM transactions t JOIN project_blagoy_nikolov.accounts a ON t.account_id = a.account_id JOIN project_blagoy_nikolov.categories c on t.category_id = c.category_id WHERE (a.user_id = ? AND c.type = ?) group by category_id;";
+		String query = "SELECT SUM(t.amount) as amount, t.category_id FROM transactions t JOIN accounts a ON t.account_id = a.account_id JOIN categories c on t.category_id = c.category_id WHERE (a.user_id = ? AND c.type = ?) group by category_id;";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);
 		statement.setLong(1, userId);
 		statement.setString(2, type);
@@ -387,9 +387,9 @@ public class TransactionDAO {
 	public TreeMap<String, BigDecimal> getAllTransactionsByUserDateTypeAccount(long userId, LocalDateTime dateFrom, LocalDateTime dateTo, String type, String account) throws SQLException {
 		TreeMap<String, BigDecimal> transactions = new TreeMap<String, BigDecimal>();
 		String query = "SELECT t.category_id, SUM(t.amount) AS amount \r\n" + 
-				"FROM project_blagoy_nikolov.transactions t \r\n" +
-				"JOIN project_blagoy_nikolov.accounts a ON t.account_id = a.account_id \r\n" +
-				"JOIN project_blagoy_nikolov.categories c on t.category_id = c.category_id \r\n" +
+				"FROM transactions t \r\n" +
+				"JOIN accounts a ON t.account_id = a.account_id \r\n" +
+				"JOIN categories c on t.category_id = c.category_id \r\n" +
 				"WHERE (a.user_id = ? AND c.type = ? AND (t.date BETWEEN ? AND ?) " + (account.equals("All accounts") ? ")" : "AND a.account_id = ? )") + 
 				"group by category_id;";
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);

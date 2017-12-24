@@ -29,7 +29,7 @@
       <div class="pull-right hidden-xs">
         <b>Version</b> 2.0.0
       </div>
-      <strong>Copyright &copy; 2017 | Finance Tracker at <i class="fa fa-github"></i><a href="https://github.com/kristianparvanov/FinanceTracker"> GitHub</a>.</strong> All rights reserved.
+      <strong>Copyright &copy; 2017 | Finance Tracker</strong> All rights reserved.
     </div>
     <!-- /.container -->
   </footer>

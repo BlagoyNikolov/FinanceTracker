@@ -209,8 +209,8 @@ public class PlannedPaymentDAO {
 	
 	public List<PlannedPayment> getAllPlannedPaymentsByUserId(long userId) throws SQLException {
 		String query = "SELECT planned_payment_id, p.name, p.type, p.from_date, p.amount, p.description, p.account_id, p.category_id "
-				+ "FROM project_blagoy_nikolov.planned_payments p "
-				+ "JOIN project_blagoy_nikolov.accounts a ON p.account_id = a.account_id AND user_id = ?;";
+				+ "FROM planned_payments p "
+				+ "JOIN accounts a ON p.account_id = a.account_id AND user_id = ?;";
 		List<PlannedPayment> payments = new ArrayList<PlannedPayment>();
 		
 		PreparedStatement statement = dbManager.getConnection().prepareStatement(query);

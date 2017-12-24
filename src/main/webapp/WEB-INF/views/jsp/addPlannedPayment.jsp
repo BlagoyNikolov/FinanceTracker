@@ -65,7 +65,7 @@
 												}
 										    };
 										    
-										    request.open("GET", "http://localhost:8080/account/getCategory/"+sel);
+										    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
 										    request.send();
 										}
 							  </script>

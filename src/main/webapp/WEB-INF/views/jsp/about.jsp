@@ -86,15 +86,6 @@
 						    </div>
 						</div>
 					</div>
-					<div class="box-footer">
-						<h3 class="box-title" style="font-size: 22px">Made possible by</h3>
-						<div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-							<img src="http://ittalents.bg/images/logo-black.png" alt="ITT">
-						</div>
-						<div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-							<img src="https://www.jobs.bg/assets/logo/2017-03-01/b_06dcf95edbe4d9fade7e104654bbd523.png" alt="UX" width="400" height="auto">
-						</div>
-					</div>
 					<!-- /.box-body -->
 				</div>
 			</section>
