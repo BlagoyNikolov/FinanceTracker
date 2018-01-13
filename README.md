@@ -56,4 +56,3 @@ The FinanceTracker is a web based Java Application which helps you manage your b
 ### Reports
 ![screenshot 50](https://user-images.githubusercontent.com/13378612/34904851-90d0cd34-f856-11e7-8081-8f9c64635bb5.png)
 
-

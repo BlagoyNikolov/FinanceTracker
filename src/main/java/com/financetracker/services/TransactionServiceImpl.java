@@ -188,7 +188,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> transactions = transactionRepository.findByAccountAccountId(accountId);
         transactions.sort(new TransactionComparator());
 
-        List<List<Transaction>> chunks = chunk(transactions, 5);
+        List<List<Transaction>> chunks = chunk(transactions, 10);
 
         int pageAs = 1;
         for (List<Transaction> pageCountents : chunks) {

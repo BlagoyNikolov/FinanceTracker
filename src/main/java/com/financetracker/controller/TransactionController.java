@@ -57,7 +57,7 @@ public class TransactionController {
         List<Transaction> transactionsPaged = transactionService.getPagingTransactions(accountId, 1);
 
         int allCount = transactionService.getAllTransactionsByAccountId(accountId).size();
-        int pages = (int) Math.ceil(allCount / (double) 5);
+        int pages = (int) Math.ceil(allCount / (double) 10);
 
         model.addAttribute("pages", pages);
         model.addAttribute("pagedTransactions", transactionsPaged);
@@ -209,7 +209,7 @@ public class TransactionController {
         User user = (User) session.getAttribute("user");
         List<Transaction> transactionsPaged = transactionService.getPagingTransactions(accountId, page);
         int allCount = transactionService.getAllTransactionsByAccountId(accountId).size();
-        int pages = (int) Math.ceil(allCount / (double) 5);
+        int pages = (int) Math.ceil(allCount / (double) 10);
         String accountName = accountService.getAccountNameByAccountId(accountId);
         BigDecimal accountBalance = accountService.getAmountByAccountId(accountId);
         String balance = NumberFormat.getCurrencyInstance(Locale.US).format(accountBalance);
