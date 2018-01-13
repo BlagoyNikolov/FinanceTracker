@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.financeTracker.model.TransactionType" %>
+<%@ page import="com.financetracker.model.PaymentType" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -40,21 +40,15 @@
 				<h4>Track your expenses and income. Start by adding a new record. After that you can come right back here and view your reports.</h4>
 			</c:if>
 			
-			<div style="margin-bottom: 25px">
-				<div class="row">
-					<div class="col-sm-3">
-						<a href="<c:url value="/main"></c:url>" type="button" class="btn btn-block btn-default btn-lg"><i class="ion ion-android-arrow-back"></i> Back</a>
-					</div>
-				</div>
-			</div>
-			
-			<section>
-				<h2>Filter by</h2>
-			</section>
-			
 			<div>
 	        	<form role="form" action="<c:url value='/reports/filtered'></c:url>" method="get">
 	              <div class="row">
+					  <div class="col-sm-2" style="display:table-cell; vertical-align:middle; text-align:center">
+						  <div class="form-group">
+							  <label>Navigation</label><br>
+							  <a href="/main" type="button" class="btn btn-block btn-default"><i class="ion ion-android-arrow-back"></i> Back</a>
+						  </div>
+					  </div>
 	            	<div class="col-sm-3" style="display:table-cell; vertical-align:middle; text-align:center">
 						<div class="form-group">
 			                <label>Date and time range:</label>
@@ -188,8 +182,8 @@
 				    });
 				}
 		    };
-		    
-		    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
+
+            request.open("GET", "/account/getCategory/"+sel);
 		    request.send();
 		}
 		

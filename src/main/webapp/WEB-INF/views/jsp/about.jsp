@@ -1,7 +1,7 @@
 <%@page import="java.math.BigDecimal"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="com.financeTracker.model.User"%>
+<%@ page import="com.financetracker.model.User"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -23,7 +23,7 @@
 			<section class="content-header"> 
 				<span style="font-size: 35px"><b>Finance</b>Tracker</span> </section>
 			<section class="content">
-				<div class="box">
+				<div class="box box-primary">
 					<div class="box-header with-border">
 						<h3 class="box-title" style="font-size: 22px">About the project</h3>
 					</div>
@@ -48,7 +48,7 @@
 						    	<img src="http://www.pngall.com/wp-content/uploads/2016/05/MySQL-Logo.png" alt="MySql" width="300" height="auto">  
 						    </div>
 						    <div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-						    	<img src="https://www.eclipse.org/artwork/images/v2/logo-800x188.png" alt="Eclipse" width="300" height="auto" align="">  
+						    	<img src="http://vojtechruzicka.com/wp-content/uploads/2016/05/IntelliJIDEA_icon.png" alt="IntelliJ" width="300" height="auto" align="">
 						    </div>
 						</div>
 						<div class="row">
@@ -59,13 +59,13 @@
 						    	<img src="https://maven.apache.org/images/maven-logo-black-on-white.png" alt="Maven" width="300" height="auto">  
 						    </div>
 						    <div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-						    	<img src="https://spring.io/img/spring-by-pivotal.png" alt="Spring" width="300" height="auto" align="">  
+						    	<img src="https://bgasparotto.com/wp-content/uploads/2017/12/spring-boot-logo.png" alt="Spring" width="300" height="auto" align="">
 						    </div>
 						</div>
 						<br>
 						<div class="row">
 						    <div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
-						    	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/AJAX_logo_by_gengns.svg/2000px-AJAX_logo_by_gengns.svg.png" alt="AJAX" width="180" height="auto">   
+						    	<img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Hibernate_logo_a.png" alt="Hibernate" width="300" height="auto">
 						    </div>
 						    <div class="col-sm-4" style="display:table-cell; vertical-align:middle; text-align:center">
 						    	<img src="https://www.shareicon.net/data/512x512/2015/10/24/661304_interface_512x512.png" alt="JSP" width="180" height="auto">   
@@ -86,7 +86,6 @@
 						    </div>
 						</div>
 					</div>
-					<!-- /.box-body -->
 				</div>
 			</section>
 		</div>

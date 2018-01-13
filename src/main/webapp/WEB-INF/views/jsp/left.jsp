@@ -41,7 +41,7 @@
 					</li>
 					<li>
 						<a href="<c:url value="/plannedPayments"></c:url>">
-							<i class="fa fa-dollar"></i> 
+							<i class="fa fa-calendar-check-o"></i>
 							<span style="font-size: 20px">Planned Payments</span>
 						</a>
 					</li>
@@ -61,18 +61,18 @@
 						</a>
 						<ul class="treeview-menu">
 							<li>
-								<a href="<c:url value="/cashflowStructute"></c:url>">
-									<h4 style="font-size: 16px"><i class="glyphicon glyphicon-menu-right"></i> Cashflow structure</h4>
+								<a href="<c:url value="/cashflowStructure"></c:url>">
+									<h4 style="font-size: 16px"><i class="fa fa-circle-o"></i> Cashflow structure</h4>
 								</a>
 							</li>
 							<li>
 								<a href="<c:url value="/incomeVsExpenses"></c:url>">
-									<h4 style="font-size: 16px"><i class="glyphicon glyphicon-menu-right"></i> Income vs Expenses</h4>
+									<h4 style="font-size: 16px"><i class="fa fa-circle-o"></i> Income vs Expenses</h4>
 								</a>
 							</li>
 							<li>
 								<a href="<c:url value="/cashflowTrend"></c:url>">
-									<h4 style="font-size: 16px"><i class="glyphicon glyphicon-menu-right"></i> Cashflow trend</h4>
+									<h4 style="font-size: 16px"><i class="fa fa-circle-o"></i> Cashflow trend</h4>
 								</a>
 							</li>
 						</ul>

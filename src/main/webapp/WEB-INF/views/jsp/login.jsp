@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="css/css">
 </head>
 
-<body class="hold-transition login-page" style="background-image:  url(img/infinity3.jpg); overflow:hidden;">
+<body class="hold-transition login-page" style="background-image:  url(img/bckg1.jpg); overflow:hidden;">
 	<div class="login-box">
 	  <div class="login-logo">
 	    <h1 style="color: white; text-shadow: 0px 0px 15px black;"><b>Finance</b>Tracker</h1>
@@ -44,16 +44,13 @@
 	        <f:password cssClass="form-control" path="password" placeholder="Password"/>
 	        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 	      </div>
-	      <div class="row">
-	        <div class="col-xs-4">
-	          <button type="submit" class="btn btn-primary btn-block btn-flat" >Sign In</button>
-	        </div>
+	      <div class="form-group has-feedback">
+		  	<button type="submit" class="btn btn-primary btn-block btn-flat" >Sign In</button>
 	      </div>
 	    </f:form>
-	    
-	    <br>
-	    <a href='<c:url value='/forgottenPassword'></c:url>'>I forgot my password</a><br>
-   		<a href="register" class="text-center">Register a new membership</a>
+
+	    <a href='<c:url value='/forgottenPassword'></c:url>'><i class="ionicons ion-help-circled"></i> I forgot my password</a><br>
+   		<a href="register"><i class="ionicons ion-android-person-add"></i> Register a new membership</a>
 	   </div>
 	 </div>
 </body>

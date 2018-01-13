@@ -1,4 +1,4 @@
-<%@page import="com.financeTracker.model.User"%>
+<%@page import="com.financetracker.model.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,11 +24,11 @@
 		<!-- Google Font -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	</head>
-	<body class="hold-transition skin-blue-light layout-top-nav">
+	<body class="hold-transition skin-blue layout-top-nav">
 		<div class="wrapper">
 		 <header class="main-header">
 		    <!-- Logo -->
-		    <a href="<c:url value="/index"></c:url>" class="logo">
+		    <a href="<c:url value="/main"></c:url>" class="logo">
 		      <!-- mini logo for sidebar mini 50x50 pixels -->
 		      <span class="logo-mini"><b>F</b>TR</span>
 		      <!-- logo for regular state and mobile devices -->
@@ -47,6 +47,16 @@
 		        <div class="collapse navbar-collapse pull-right">
 		        <ul class="nav navbar-nav">
 		          <!-- User Account: style can be found in dropdown.less -->
+					<li>
+						<form role="form" action="search" method="get">
+							<div class="input-group margin" style="width: 200px;">
+								<input type="text" class="form-control" placeholder="Search for info here" name="keyword">
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</form>
+					</li>
 		          <li>
 		            <a href="<c:url value="/user"></c:url>" style="font-size: 20px;">
 		            <i class="ion ion-person"></i>

@@ -23,7 +23,7 @@
 		<!-- Google Font -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition register-page" style="background-image:  url(<c:url value='/img/infinity3.jpg'></c:url>); overflow:hidden;">
+<body class="hold-transition register-page" style="background-image:  url(<c:url value='/img/bckg3.jpg'></c:url>); overflow:hidden;">
 																		
 <div class="register-box">
   <div class="register-logo">
@@ -49,14 +49,11 @@
         <input type="password" class="form-control" placeholder="Retype new password"  name="repeatPassword" required="">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span> 
       </div>
-      <div class="row">
-        <div class="col-xs-6">
+      <div class="form-group has-feedback">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Set new password</button>
-        </div>
       </div>
     </form>
-    <br>
-    I am already registered. <a href="login" class="text-center">Log me in</a>
+      I am already registered. <a href="login" class="text-center"><i class="fa fa-sign-in"></i> Log me in</a>
   </div>
 </div>
 </body>

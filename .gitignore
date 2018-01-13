@@ -28,6 +28,8 @@ hs_err_pid*
 .classpath
 .project
 .springBeans
-.mvn
+mvn*
 .DS_Store
 .cmd
+.idea/
+FinanceTracker.iml

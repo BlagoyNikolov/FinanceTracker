@@ -66,7 +66,7 @@
 			                <select class="form-control select2" style="width: 100%;" data-placeholder="Select a category" name="category">
 			                <option selected="selected"><c:out value="${ categoryName }"></c:out></option>
 			                  <c:forEach items="${ categories }" var="category">
-			                	  <option><c:out value="${ category }"></c:out></option>
+			                	  <option><c:out value="${ category.name }"></c:out></option>
 			                  </c:forEach>
 			                </select>
 			            </div>
@@ -77,30 +77,6 @@
 		                  <label>Amount</label>
 		                  <f:input type="text" class="form-control" placeholder="Amount" path="initialAmount" value="${ editBudgetAmount }" />
 		                </div>
-		                <div class="form-group">
-			                <label>Tags</label>
-			                <select id="multy" class="form-control select2" multiple="multiple" data-placeholder="Select tags" style="width: 100%;" name="tagss">
-			                  <c:forEach items="${ tags }" var="tag">
-			                	  <option><c:out value="${ tag.name }"></c:out></option>
-			                  </c:forEach>
-			                </select>
-			                <c:set var="tags" value="${ tagNames }" />
-			                <script type="text/javascript">
-				            	var values = '${tags}';
-				            	
-				            	values = values.replace(/[\[\]']+/g,'')
-				            	
-                				$.each(values.split(","), function(i,e){
-                				    $("#multy option[value='" + e + "']").prop('selected', true);
-                				});
-                				
-                				options = document.querySelectorAll('#multy option');
-
-                			    values.split(',').forEach(function(v) {
-                			      Array.from(options).find(c => c.value == v).selected = true;
-                			    });
-							</script>
-			            </div>
 			            
 			              <!-- Date and time range -->
               <div class="form-group">
@@ -144,8 +120,7 @@
 			$('.select2').select2()
 			$('#reservationtime').daterangepicker({ timePicker: false, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
 		});
-		
-		
 	</script>
+
 	</body>
 </html>

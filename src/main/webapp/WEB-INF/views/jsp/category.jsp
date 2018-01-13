@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.financeTracker.model.User"%>
+<%@ page import="com.financetracker.model.User"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -59,6 +59,15 @@
 	<div>
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>
-	
+
+<!-- Select2 -->
+<script src="<c:url value="/js/select2.full.min.js" />" type ="text/javascript"></script>
+
+<!-- I hate you -->
+<script type="text/javascript">
+	$(function () {
+		$('.select2').select2()
+	});
+</script>
 </body>
 </html>

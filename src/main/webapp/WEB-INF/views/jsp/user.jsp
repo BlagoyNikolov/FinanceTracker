@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.financeTracker.model.TransactionType" %>
+<%@ page import="com.financetracker.model.PaymentType" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -69,7 +69,7 @@
 		                </div>
                		  </div>
                		  <div class="box-footer">
-		                <button type="submit" class="btn btn-primary">Save</button>
+		                <button type="submit" class="btn btn-primary">Update</button>
 		                <a href="main" class="btn btn-default">Cancel</a>
 		              </div>
 		            </f:form>

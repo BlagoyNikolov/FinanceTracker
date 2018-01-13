@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.financeTracker.model.TransactionType" %>
+<%@ page import="com.financetracker.model.PaymentType" %>
 <%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
@@ -61,8 +61,8 @@
 										    });
 										}
 								    };
-								    
-								    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
+
+                                    request.open("GET", "/account/getCategory/"+sel);
 								    request.send();
 								}
 							  </script>
@@ -80,7 +80,7 @@
 		                 <div class="form-group">
 			                <label>Category</label>
 			                <select class="form-control select2" style="width: 100%;" data-placeholder="Select a category" name="category" id="cat">
-			                <option selected="selected"><c:out value="${ editTransactionCategory }"></c:out></option>
+			                	<option selected="selected"><c:out value="${ editTransactionCategory }"></c:out></option>
 			                </select>
 			            </div>
 			            <div class="form-group">
@@ -102,32 +102,6 @@
                 			</div>
 		                </div>
 		                <div class="form-group">
-			                <label>Tags</label>
-			                <select id="multy" class="form-control select2" multiple="multiple" data-placeholder="Select tags" style="width: 100%;" name="tagss">
-				                <c:forEach items="${tags }" var="tag">
-				                	<option><c:out value="${tag.name}"></c:out></option>
-				                </c:forEach>
-			                </select>
-			                <c:set var="tags" value="${ editTransactionTags }" />
-				            <script type="text/javascript">
-				            	var values = '${tags}';
-				            	
-				            	values = values.replace(/[\[\]']+/g,'')
-                			    
-                			    var select = document.getElementById( 'multy' );
-
-                			    for ( var i = 0, l = select.options.length, o; i < l; i++ )
-                			    {
-                			      o = select.options[i];
-                			      if ( values.indexOf( o.text ) != -1 )
-                			      {
-                			        o.selected = true;
-                			      }
-                			    }
-
-							</script>
-			            </div>
-		                <div class="form-group">
                   			<label>Description</label>
                  			<f:textarea id="desc" class="form-control" rows="3" placeholder="Enter transaction description here" path="description" ></f:textarea>
                  			<c:set var="description" value="${ editTransactionDescription }" />
@@ -139,13 +113,14 @@
                		  </div>
                		  <div class="box-footer">
 		                <button type="submit" class="btn btn-primary">Save</button>
-		                <a href="<c:url value="/account/${sessionScope.accountId}"></c:url>" class="btn btn-default">Cancel</a>
-		              </div>
+		                <%--<a href="<c:url value="/account/${sessionScope.accountId}"></c:url>" class="btn btn-default">Cancel</a>--%>
+						  <a class="btn btn-default" href="javascript:history.back(1)">Cancel</a>
+					  </div>
 		            <%-- </form> --%>
 		            </f:form>
-		            <form action="deleteTransaction/${transactionId}" method="post">
-		            	<div class="box-footer">	
-		            		<button type="submit" class="btn btn-danger">Delete transaction</button>
+		            <form action="deleteTransaction/${transactionId}" method="post" id="deleteForm">
+		            	<div class="box-footer">
+							<input id="submitBtn" type="button" name="btn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-danger" value="Delete transaction"></input>
 	          			</div>
 					</form>
 	          	</div>
@@ -155,6 +130,43 @@
 	<div>
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>
+
+	<div class="modal fade in" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h3 class="modal-title">Confirm delete</h3>
+				</div>
+				<div class="modal-body">
+					<h4>Are you sure you want to delete this transaction and all the data it contains?</h4>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+					<a href="#" id="submit" class="btn btn-danger danger">Delete</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+        $('#submit').click(function(){
+            /* when the submit button in the modal is clicked, submit the form */
+            $('#deleteForm').submit();
+        });
+	</script>
+
+	<script type="text/javascript">
+        $(function () {
+            $('.select2').select2()
+            $('#datepicker').datepicker({
+                autoclose: true
+            })
+        })
+	</script>
 	
 <!-- jQuery 3 -->
 <script src="<c:url value="/js/jquery.min.js" />" type ="text/javascript"></script>
@@ -173,13 +185,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="<c:url value="/js/static/demo.js" />" type ="text/javascript"></script>
 <!-- I hate you -->
-<script type="text/javascript">
-	$(function () {
-		$('.select2').select2()
-		$('#datepicker').datepicker({
-	    	autoclose: true
-		})
-	})
-</script>
+
 </body>
 </html>

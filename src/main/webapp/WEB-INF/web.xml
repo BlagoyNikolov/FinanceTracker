@@ -9,19 +9,19 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
+
   <error-page>
     <error-code>404</error-code>
-    <location>/WEB-INF/views/jsp/error404.jsp</location>
+    <location>/WEB-INF/views/jsp/error.jsp</location>
   </error-page>
   <error-page>
     <error-code>500</error-code>
-    <location>/WEB-INF/views/jsp/error500.jsp</location>
+    <location>/WEB-INF/views/jsp/error.jsp</location>
   </error-page>
-  
+
   <mime-mapping>
     <extension>ico</extension>
     <mime-type>image/x-icon</mime-type>
   </mime-mapping>
-  
+
 </web-app>

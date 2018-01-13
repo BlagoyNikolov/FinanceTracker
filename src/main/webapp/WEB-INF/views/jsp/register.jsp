@@ -23,7 +23,7 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="css/css">
 </head>
-<body class="hold-transition register-page" style="background-image:  url(img/infinity3.jpg); overflow:hidden;">
+<body class="hold-transition register-page" style="background-image:  url(img/bckg2.jpg); overflow:hidden;">
 <div class="register-box">
   <div class="register-logo">
     <h1 style="color: white; text-shadow: 0px 0px 15px black;"><b>Finance</b>Tracker</h1>
@@ -60,14 +60,11 @@
         <f:input type="text" class="form-control" placeholder="Last Name" required="" path="lastName" />
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
-      <div class="row">
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
-        </div>
+      <div class="form-group has-feedback">
+        <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
       </div>
     </f:form>
-    <br>
-    I am already registered. <a href="login" class="text-center">Log me in</a>
+      I am already registered. <a href="login" class="text-center"><i class="fa fa-sign-in"></i> Log me in</a>
   </div>
 </div>
 </body></html>

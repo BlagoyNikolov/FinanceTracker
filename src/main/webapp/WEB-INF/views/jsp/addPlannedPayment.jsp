@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.financeTracker.model.TransactionType" %>
+<%@ page import="com.financetracker.model.PaymentType" %>
 <%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
@@ -64,8 +64,8 @@
 												    });
 												}
 										    };
-										    
-										    request.open("GET", "http://localhost:8080/FinanceTracker/account/getCategory/"+sel);
+
+                                            request.open("GET", "/account/getCategory/"+sel);
 										    request.send();
 										}
 							  </script>
@@ -104,14 +104,6 @@
 	                  		 		<input type="text" class="form-control pull-right" id="datepicker" data-placeholder="Enter planned date" name="date">
 	                			</div>
 		               		</div>
-			                <div class="form-group">
-				                <label>Tags</label>
-				                <select class="form-control select2" multiple="multiple" data-placeholder="Select tags" style="width: 100%;" name="tagss">
-				                  <c:forEach items="${tags}" var="tag">
-				                	  <option><c:out value="${tag.name}"></c:out></option>
-				                  </c:forEach>
-				                </select>
-				            </div>
 			                <div class="form-group">
 	                  			<label>Description</label>
 	                 			<f:textarea class="form-control" rows="3" placeholder="Enter transaction description here" path="description"></f:textarea>

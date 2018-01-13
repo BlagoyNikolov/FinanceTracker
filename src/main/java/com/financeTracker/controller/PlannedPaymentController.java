@@ -1,17 +1,14 @@
-package com.financeTracker.controller;
+package com.financetracker.controller;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.mail.Session;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
+import com.financetracker.model.Account;
+import com.financetracker.model.Category;
+import com.financetracker.model.PlannedPayment;
+import com.financetracker.model.User;
+import com.financetracker.services.AccountService;
+import com.financetracker.services.CategoryService;
+import com.financetracker.services.PlannedPaymentService;
+import com.financetracker.services.UserService;
+import com.financetracker.util.DateConverters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,262 +18,170 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.financeTracker.model.Account;
-import com.financeTracker.model.Category;
-import com.financeTracker.model.PlannedPayment;
-import com.financeTracker.model.Tag;
-import com.financeTracker.model.Transaction;
-import com.financeTracker.model.TransactionType;
-import com.financeTracker.model.User;
-import com.financeTracker.model.db.AccountDAO;
-import com.financeTracker.model.db.CategoryDAO;
-import com.financeTracker.model.db.PlannedPaymentDAO;
-import com.financeTracker.model.db.TagDAO;
-import com.financeTracker.model.db.UserDAO;
-import com.financeTracker.threads.PlannedPaymentService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class PlannedPaymentController {
-	@Autowired
-	private PlannedPaymentDAO plannedPaymentDAO;
-	
-	@Autowired
-	private PlannedPaymentService plannedPaymentService;
-	
-	@Autowired
-	private CategoryDAO categoryDao;
-	
-	@Autowired
-	private AccountDAO accountDAO;
-	
-	@Autowired
-	private TagDAO tagDAO;
-	
-	@Autowired
-	private UserDAO userDao;
-	
-	@RequestMapping(value="/plannedPayments", method=RequestMethod.GET)
-	public String getAllPlannedPayments(HttpServletRequest request, HttpSession session, Model model) {
-		User user = (User) session.getAttribute("user");
-		List<PlannedPayment> plannedPayments = null;
-		Set<Category> allCategories = new HashSet<Category>();
-		Set<Category> ownCategories = new HashSet<Category>();
-		Set<Category> categories = new HashSet<Category>();
-		Set<Account> accounts = new HashSet<Account>();
-		Set<Tag> tags = new HashSet<Tag>();
-		try {
-			plannedPayments = plannedPaymentDAO.getAllPlannedPaymentsByUserId(user.getUserId());
-			categories = categoryDao.getAllCategoriesByUserId();
-			ownCategories = categoryDao.getAllCategoriesByUserId(user.getUserId());
-			accounts = accountDAO.getAllAccountsByUserId(user.getUserId());
-			allCategories.addAll(categories);
-			allCategories.addAll(ownCategories);
-			tags = tagDAO.getAllTagsByUserId(user.getUserId());
-		} catch (SQLException e) {
-			return "error500";
-		}
-		
-		request.getSession().setAttribute("categories", allCategories);
-		request.getSession().setAttribute("accounts", accounts);
-		request.getSession().setAttribute("tags", tags);
-		request.getSession().setAttribute("plannedPayments", plannedPayments);
-		
-		return "plannedPayments";
-	}
-	
-	@RequestMapping(value="/addPlannedPayment", method=RequestMethod.GET)
-	public String getAddPlannedPayment(HttpServletRequest request, HttpSession session, Model model) {
-		PlannedPayment plannedPayment = new PlannedPayment();
-		
-		model.addAttribute("plannedPayment", plannedPayment);	
-		session.setAttribute("link", "addPlannedPayment");
-		
-		return "addPlannedPayment";
-	}
-	
-	@RequestMapping(value="/addPlannedPayment", method=RequestMethod.POST)
-	public String postAddPlannedPayment(HttpServletRequest request, HttpSession session, Model m, @Valid @ModelAttribute("plannedPayment") PlannedPayment plannedPayment, BindingResult bindingResult) {
-		String name = request.getParameter("name");
-		String type = request.getParameter("type");
-		String account = request.getParameter("account");
-		String category = request.getParameter("category");
-		String amount = request.getParameter("amount");
-		String date = request.getParameter("date");
-		String[] tags = request.getParameterValues("tagss");
-		String description = request.getParameter("description");
-		
-		plannedPayment.setTags(null);
-		if (type.isEmpty() || account.isEmpty() || category.isEmpty() || date.isEmpty()  || bindingResult.hasErrors()) {
-			m.addAttribute("error", "Could not insert planned payment. Please, enter valid data!");
-			PlannedPayment p = new PlannedPayment();
+    public static final String ERROR_MESSAGE = "Could not insert planned payment. Please, enter valid data!";
+    public static final String DATE_MESSAGE = "Please enter a date greater than today's date";
+
+    @Autowired
+    private PlannedPaymentService plannedPaymentService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = "/plannedPayments", method = RequestMethod.GET)
+    public String getAllPlannedPayments(HttpServletRequest request, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        Set<Category> allCategories = new HashSet<Category>();
+        List<PlannedPayment> plannedPayments = plannedPaymentService.getAllPlannedPaymentsByUser(user);
+        Set<Category> categories = categoryService.getAllCategoriesByUserId();
+        Set<Category> ownCategories = categoryService.getAllCategoriesByUserId(user.getUserId());
+        allCategories.addAll(categories);
+        allCategories.addAll(ownCategories);
+        Set<Account> accounts = accountService.getAllAccountsByUser(user);
+
+        request.getSession().setAttribute("plannedPayments", plannedPayments);
+        request.getSession().setAttribute("accounts", accounts);
+        request.getSession().setAttribute("categories", allCategories);
+
+        return "plannedPayments";
+    }
+
+    @RequestMapping(value = "/addPlannedPayment", method = RequestMethod.GET)
+    public String getAddPlannedPayment(HttpSession session, Model model) {
+        PlannedPayment plannedPayment = new PlannedPayment();
+        model.addAttribute("plannedPayment", plannedPayment);
+        session.setAttribute("link", "addPlannedPayment");
+        return "addPlannedPayment";
+    }
+
+    @RequestMapping(value = "/addPlannedPayment", method = RequestMethod.POST)
+    public String postAddPlannedPayment(HttpServletRequest request, Model model,
+                                        @Valid @ModelAttribute("plannedPayment") PlannedPayment plannedPayment, BindingResult bindingResult) {
+        String type = request.getParameter("type");
+        String account = request.getParameter("account");
+        String category = request.getParameter("category");
+        String date = request.getParameter("date");
+        String name = request.getParameter("name");
+        String amount = request.getParameter("amount");
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (type.isEmpty() || account.isEmpty() || category.isEmpty() || date.isEmpty() || bindingResult.hasErrors()) {
+            model.addAttribute("error", ERROR_MESSAGE);
+            PlannedPayment payment = new PlannedPayment();
             return "addPlannedPayment";
-	 	}
-		
-		String[] inputDate = date.split("/");
-		int month = Integer.valueOf(inputDate[0]);
-		int dayOfMonth = Integer.valueOf(inputDate[1]);
-		int year = Integer.valueOf(inputDate[2]);
-		
-		LocalDateTime newDate = LocalDateTime.of(year, month, dayOfMonth, 0, 0, 0);
-		
-		User u = (User) request.getSession().getAttribute("user");
-		
-		HashSet<Tag> tagsSet = new HashSet<>();
-		if (tags != null) {
-			for (String tagName : tags) {
-				tagsSet.add(new Tag(tagName, u.getUserId()));
-			}
-		}
-		
-		Account acc = null;
-		try {
-			acc = accountDAO.getAccountByAccountNameAndAccountId(account, u.getUserId());
-			Category cat = categoryDao.getCategoryByCategoryName(category);
-			PlannedPayment p = new PlannedPayment(name, TransactionType.valueOf(type), newDate, BigDecimal.valueOf(Double.valueOf(amount)), description, acc.getAccountId(), cat.getCategoryId(), tagsSet);
+        }
 
-			plannedPaymentDAO.insertPlannedPayment(p);
-			plannedPaymentService.initPaymentThread(p);
-			
-			u.setLastFill(LocalDateTime.now());
-			userDao.updateUser(u);
-		} catch (SQLException e) {
-			return "error500";
-		}
-		request.setAttribute("user", u);
-		request.setAttribute("accountId", acc.getAccountId());
-		
-		
-		return "redirect:/plannedPayments";
-	}
-	
-	@RequestMapping(value="/payment/{plannedPaymentId}", method=RequestMethod.GET)
-	public String getEditPlannedPayment(HttpServletRequest request, HttpSession session, Model model, @PathVariable("plannedPaymentId") Long plannedPaymentId) {
-		try {
-			PlannedPayment p = plannedPaymentDAO.getPlannedPaymentByPlannedPaymentId(plannedPaymentId);
-			String name = p.getName();
-			String type = p.getPaymentType().toString();
-			String description = p.getDescription();
-			BigDecimal amount = p.getAmount();
-			String accountName = accountDAO.getAccountNameByAccountId(p.getAccount());
-			String category = categoryDao.getCategoryNameByCategoryId(p.getCategory());
-			LocalDateTime date = p.getFromDate();
-			Set<Tag> tags = tagDAO.getTagsByPlannedPaymentId(plannedPaymentId);
-			
-			Set<String> tagNames = new HashSet<String>();
-			for (Tag tag : tags) {
-				tagNames.add(tag.getName());
-			}
-			
-			session.setAttribute("link", "payment/" + plannedPaymentId);
-			model.addAttribute("plannedPayment", p);	
-			model.addAttribute("editPlannedPaymentName", name);
-			model.addAttribute("editPlannedPaymentType", type);
-			model.addAttribute("editTPlannedPaymentDescription", description);
-			model.addAttribute("editPlannedPaymentAmount", amount);
-			model.addAttribute("editPlannedPaymentAccount", accountName);
-			model.addAttribute("editPlannedPaymentCategory", category);
-			model.addAttribute("editPlannedPaymentDate", date);
-			model.addAttribute("editPlannedPaymentTags", tagNames);
-			session.setAttribute("plannedPaymentId", plannedPaymentId);
-		} catch (SQLException e) {
-			return "error500";
-		}
-	
-		return "editPlannedPayment";
-	}
-	
-	@RequestMapping(value="/payment/editPlannedPayment", method=RequestMethod.POST)
-	public String postEditPlannedPayment(HttpServletRequest request, HttpSession session, Model model, @Valid @ModelAttribute("plannedPayment") PlannedPayment plannedPayment, BindingResult bindingResult) {
-		plannedPayment.setTags(null);
-		String name = request.getParameter("name");
-		String type = request.getParameter("type");
-		String account = request.getParameter("account");
-		String category = request.getParameter("category");
-		String amount = request.getParameter("amount");
-		String date = request.getParameter("date");
-		String[] tags = request.getParameterValues("tagss");
-		long plannedPaymentId = (long) request.getSession().getAttribute("plannedPaymentId");
-		
-		if (type.isEmpty() || account.isEmpty() || category.isEmpty() || bindingResult.hasErrors()) {
-			model.addAttribute("error", "Could not update payment. Please, enter valid data!");
-			try {
-				PlannedPayment p = new PlannedPayment();
-				Set<String> tagNames = new HashSet<String>();
-				if (tags != null) {
-					for (String tag : tags) {
-						tagNames.add(tag);
-					}
-				}
-				
-				String[] inputDate = date.split("/");
-				int month = Integer.valueOf(inputDate[0]);
-				int dayOfMonth = Integer.valueOf(inputDate[1]);
-				int year = Integer.valueOf(inputDate[2]);
-				
-				LocalDateTime newDate = LocalDateTime.of(year, month, dayOfMonth, 0, 0, 0);
-				
-				model.addAttribute("editPlannedPaymentName", name);
-				model.addAttribute("editPlannedPaymentType", type);
-				model.addAttribute("editTPlannedPaymentDescription", plannedPayment.getDescription());
-				model.addAttribute("editPlannedPaymentAmount", amount);
-				model.addAttribute("editPlannedPaymentAccount", account);
-				model.addAttribute("editPlannedPaymentCategory", category);
-				model.addAttribute("editPlannedPaymentDate", newDate);
-				model.addAttribute("editPlannedPaymentTags", tagNames);
-			} catch (Exception e) {
-				return "error500";
-			}
-			
-			return "editPlannedPayment";
-		}
-		
-		String[] inputDate = date.split("/");
-		int month = Integer.valueOf(inputDate[0]);
-		int dayOfMonth = Integer.valueOf(inputDate[1]);
-		int year = Integer.valueOf(inputDate[2]);
-		
-		LocalDateTime newDate = LocalDateTime.of(year, month, dayOfMonth, 0, 0, 0);
-		
-		User u = (User) session.getAttribute("user");
-		
-		HashSet<Tag> tagsSet = new HashSet<>();
-		if (tags != null) {
-			for (String tagName : tags) {
-				tagsSet.add(new Tag(tagName, u.getUserId()));
-			}
-		}
-		
-		Account acc = null;
-		try {
-			acc = accountDAO.getAccountByAccountNameAndAccountId(account, u.getUserId());
-			Category cat = categoryDao.getCategoryByCategoryName(category);
-			PlannedPayment p = new PlannedPayment(name, TransactionType.valueOf(type), newDate, BigDecimal.valueOf(Double.valueOf(amount)), plannedPayment.getDescription(), acc.getAccountId(), cat.getCategoryId(), tagsSet);
-			p.setPlannedPaymentId(plannedPaymentId);
+        LocalDateTime newDate = DateConverters.convertFromStringToLocalDateTime(date);
+        if (LocalDateTime.now().isAfter(newDate)) {
+            model.addAttribute("error", DATE_MESSAGE);
+            PlannedPayment payment = new PlannedPayment();
+            return "addPlannedPayment";
+        }
 
-			tagDAO.deleteAllTagsForPlannedPayment(plannedPaymentId);
-			plannedPaymentDAO.updatePlannedPayment(p);
-			
-			u.setLastFill(LocalDateTime.now());
-			userDao.updateUser(u);
-		} catch (SQLException e) {
-			return "error500";
-		}
-		return "redirect:/plannedPayments";
-	}
-	
-	@RequestMapping(value="/payment/deletePlannedPayment/{plannedPaymentId}", method=RequestMethod.POST)
-	public String deletePlannedPayment(@PathVariable("plannedPaymentId") Long plannedPaymentId, HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		
-		try {
-			tagDAO.deleteAllTagsForPlannedPayment(plannedPaymentId);
-			plannedPaymentDAO.deletePlannedPayment(plannedPaymentId);
-			
-			user.setLastFill(LocalDateTime.now());
-			userDao.updateUser(user);
-		} catch (SQLException e) {
-			return "error500";
-		}
-		return "redirect:/plannedPayments";
-	}
+        plannedPaymentService.postPlannedPayment(user, account, category, name, type, newDate, amount, plannedPayment, 0);
+        Account acc = accountService.getAccountByUserAndAccountName(user, account);
+
+        request.setAttribute("user", user);
+        request.setAttribute("accountId", acc.getAccountId());
+
+        return "redirect:/plannedPayments";
+    }
+
+    @RequestMapping(value = "/payment/{plannedPaymentId}", method = RequestMethod.GET)
+    public String getEditPlannedPayment(HttpSession session, Model model,
+                                        @PathVariable("plannedPaymentId") Long plannedPaymentId) {
+        PlannedPayment plannedPayment = plannedPaymentService.getPlannedPaymentByPlannedPaymentId(plannedPaymentId);
+        String name = plannedPayment.getName();
+        String type = plannedPayment.getPaymentType().toString();
+        String description = plannedPayment.getDescription();
+        BigDecimal amount = plannedPayment.getAmount();
+        String accountName = accountService.getAccountNameByAccountId(plannedPayment.getAccount().getAccountId());
+        String category = categoryService.getCategoryNameByCategoryId(plannedPayment.getCategory().getCategoryId());
+        LocalDateTime date = plannedPayment.getFromDate();
+
+        model.addAttribute("plannedPayment", plannedPayment);
+        model.addAttribute("editPlannedPaymentName", name);
+        model.addAttribute("editPlannedPaymentType", type);
+        model.addAttribute("editTPlannedPaymentDescription", description);
+        model.addAttribute("editPlannedPaymentAmount", amount);
+        model.addAttribute("editPlannedPaymentAccount", accountName);
+        model.addAttribute("editPlannedPaymentCategory", category);
+        model.addAttribute("editPlannedPaymentDate", date);
+
+        session.setAttribute("link", "payment/" + plannedPaymentId);
+        session.setAttribute("plannedPaymentId", plannedPaymentId);
+
+        return "editPlannedPayment";
+    }
+
+    @RequestMapping(value = "/payment/editPlannedPayment", method = RequestMethod.POST)
+    public String postEditPlannedPayment(HttpServletRequest request, HttpSession session, Model model,
+                                         @Valid @ModelAttribute("plannedPayment") PlannedPayment plannedPayment, BindingResult bindingResult) {
+        String name = request.getParameter("name");
+        String type = request.getParameter("type");
+        String account = request.getParameter("account");
+        String category = request.getParameter("category");
+        String amount = request.getParameter("amount");
+        String date = request.getParameter("date");
+
+        long plannedPaymentId = (long) request.getSession().getAttribute("plannedPaymentId");
+
+        if (type.isEmpty() || account.isEmpty() || category.isEmpty() || bindingResult.hasErrors()) {
+            model.addAttribute("error", "Could not update payment. Please, enter valid data!");
+            try {
+                PlannedPayment payment = new PlannedPayment();
+
+                LocalDateTime newDate = DateConverters.convertFromStringToLocalDateTime(date);
+
+                model.addAttribute("editPlannedPaymentName", name);
+                model.addAttribute("editPlannedPaymentType", type);
+                model.addAttribute("editTPlannedPaymentDescription", plannedPayment.getDescription());
+                model.addAttribute("editPlannedPaymentAmount", amount);
+                model.addAttribute("editPlannedPaymentAccount", account);
+                model.addAttribute("editPlannedPaymentCategory", category);
+                model.addAttribute("editPlannedPaymentDate", newDate);
+            } catch (Exception e) {
+                return "error";
+            }
+
+            return "editPlannedPayment";
+        }
+
+        LocalDateTime newDate = DateConverters.convertFromStringToLocalDateTime(date);
+        if (LocalDateTime.now().isAfter(newDate)) {
+            model.addAttribute("error", DATE_MESSAGE);
+            PlannedPayment payment = new PlannedPayment();
+            return "editPlannedPayment";
+        }
+
+        User user = (User) session.getAttribute("user");
+        plannedPaymentService.postPlannedPayment(user, account, category, name, type, newDate, amount, plannedPayment, plannedPaymentId);
+
+        return "redirect:/plannedPayments";
+    }
+
+    @RequestMapping(value = "/payment/deletePlannedPayment/{plannedPaymentId}", method = RequestMethod.POST)
+    public String deletePlannedPayment(@PathVariable("plannedPaymentId") Long plannedPaymentId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        plannedPaymentService.deletePlannedPayment(plannedPaymentId);
+
+        return "redirect:/plannedPayments";
+    }
 }

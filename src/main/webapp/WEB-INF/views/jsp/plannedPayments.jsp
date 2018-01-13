@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="java.math.BigDecimal"%>
-<%@ page import="com.financeTracker.model.TransactionType" %>
+<%@ page import="com.financetracker.model.PaymentType" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -70,7 +70,7 @@
 									</div>
 									
 									<div class="col-sm-4">
-							 			<h4>Category: <c:out value="${payment.categoryName}"></c:out></h4>
+							 			<h4>Category: <c:out value="${payment.category.name}"></c:out></h4>
 							 		</div>
 				             	</div>
 							 </div>

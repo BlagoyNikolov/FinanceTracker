@@ -1,7 +1,7 @@
 <%@page import="java.math.BigDecimal"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="com.financeTracker.model.User"%>
+<%@ page import="com.financetracker.model.User"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -15,7 +15,6 @@
 <script src="<c:url value="/js/utils.js" />"  type ="text/javascript"></script>
 </head>
 <body>
-	
 	<div>
 		<jsp:include page="left.jsp"></jsp:include>
 	</div>
@@ -29,7 +28,7 @@
 	  	</div>
 	
 		 <section class="content-header">
-			<h2>Current balance across all accounts: <c:out value="${ balance }"></c:out></h2>
+			<h2>Current balance across all accounts: <b style="font-size: 30px"><c:out value="${ balance }"></c:out></b></h2>
 			<h1>All accounts</h1>
 		</section>
 		
@@ -38,16 +37,19 @@
 			<c:forEach items="${ accounts }" var="account">
 				<div class="col-lg-3 col-xs-6">
 					<!-- small box -->
-					<c:if test="${fn:contains(account.name, 'card')}">
+					<c:if test="${fn:contains(account.name, 'Debit')}">
 			            <div class="small-box bg-yellow">
 	            	</c:if>
+					<c:if test="${fn:contains(account.name, 'Credit')}">
+						<div class="small-box bg-blue">
+					</c:if>
 	              	<c:if test="${fn:contains(account.name, 'Cash')}">
 	            		<div class="small-box bg-green">
 	            	</c:if>
 	            	<c:if test="${fn:contains(account.name, 'Bank')}">
 	            		<div class="small-box bg-red">
 	            	</c:if>
-	            	<c:if test="${!fn:contains(account.name, 'card') && !fn:contains(account.name, 'Cash') && !fn:contains(account.name, 'Bank')}">
+	            	<c:if test="${!fn:contains(account.name, 'Debit') && !fn:contains(account.name, 'Cash') && !fn:contains(account.name, 'Bank') && !fn:contains(account.name, 'Credit')}">
 	            		<div class="small-box bg-aqua">
 	            	</c:if>
 			            <div class="inner">
@@ -75,7 +77,7 @@
 			
 			<div class="col-lg-3 col-xs-6">
 				<!-- small box -->
-		          <div class="small-box bg-aqua">
+		          <div class="small-box bg-teal">
 		            <div class="inner">
 		              <h3>Add</h3>
 		              <p>Add new Account</p>
@@ -114,8 +116,7 @@
 						dates.push(kv[0]);
 						amounts.push(kv[1]);
 					}
-					
-					var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 				    var config = {
 				        type: 'line',
 				        data: {
@@ -169,10 +170,6 @@
 				    
 				</script>
 			</div>
-			
-			
-			
-				   
 			</div>
 	 	</section>
 	</div>

@@ -1,126 +1,164 @@
-package com.financeTracker.model;
+package com.financetracker.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table(name = "transactions", uniqueConstraints = @UniqueConstraint(columnNames = {"transaction_id"}))
 public class Transaction {
-	private long transactionId;
-	private TransactionType type;
-	
-	@Size(min = 2, max = 45)
-	private String description;
-	
-	@NotNull
-	@Min(1)
-	@Max((long) 999999999.9999)
-	private BigDecimal amount;
-	
-	private long account;
-	private String categoryName;
-	private long category;
-	private LocalDateTime date;
-	private Set<Tag> tags = new HashSet<Tag>();
-	
-	public Transaction() {
-	}
-	
-	public Transaction(long transactionId, TransactionType type, String description, BigDecimal amount, long account, long category,
-			LocalDateTime date, Set<Tag> tags) {
-		this(type, description, amount,account, category, date, tags);
-		
-		this.transactionId = transactionId;
-	}
 
-	public Transaction(TransactionType type, String description, BigDecimal amount, long account, long category, LocalDateTime date, Set<Tag> tags) {
-		this.type = type;
-		this.description = description;
-		this.amount = amount;
-		this.account = account;
-		this.category = category;
-		this.date = date;
-		this.tags = tags;
-	}
-	
-	public Transaction(TransactionType type, LocalDateTime date, BigDecimal amount, long account, long category) {
-		this.type = type;
-		this.date = date;
-		this.amount = amount;
-		this.account = account;
-		this.category = category;
-	}
-	
-	public long getTransactionId() {
-		return transactionId;
-	}
-	
-	public void setTransactionId(long transactionId) {
-		this.transactionId = transactionId;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "transaction_id")
+    private long transactionId;
 
-	public TransactionType getType() {
-		return type;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public BigDecimal getAmount() {
-		return amount;
-	}
-	
-	public long getAccount() {
-		return account;
-	}
-	
-	public String getCategoryName() {
-		return categoryName;
-	}
-	
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-	
-	public long getCategory() {
-		return category;
-	}
-	
-	public LocalDateTime getDate() {
-		return date;
-	}
-	
-	public Set<Tag> getTags() {
-		return Collections.unmodifiableSet(tags);
-	}
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private PaymentType type;
 
-	public void setType(TransactionType type) {
-		this.type = type;
-	}
+    @Size(min = 2, max = 45)
+    @Column(name = "description")
+    private String description;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @NotNull
+    @Min(1)
+    @Max((long) 999999999.9999)
+    @Column(name = "amount")
+    private BigDecimal amount;
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Account.class)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    private Account account;
 
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
-	}
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    private Category category;
 
-	@Override
-	public String toString() {
-		return "Transaction [transactionId=" + transactionId + ", type=" + type + ", amount=" + amount + ", account="
-				+ account + ", category=" + category + ", date=" + date + ", tags="
-				+ tags + "]\n";
-	}
+    private String categoryName;
+
+    @Column(name = "date")
+    private LocalDateTime date;
+
+    @ManyToMany
+    @JoinTable(
+            name = "budgets_has_transactions",
+            joinColumns = @JoinColumn(name = "transaction_id", referencedColumnName = "transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "budget_id", referencedColumnName = "budget_id")
+    )
+    private Set<Budget> budgets = new HashSet<Budget>();
+
+    public Transaction() {
+    }
+
+    public Transaction(long transactionId, PaymentType type, String description, BigDecimal amount, Account account,
+                       Category category, LocalDateTime date) {
+        this(type, description, amount, account, category, date);
+
+        this.transactionId = transactionId;
+    }
+
+    public Transaction(PaymentType type, String description, BigDecimal amount,
+                       Account account, Category category, LocalDateTime date) {
+        this.type = type;
+        this.description = description;
+        this.amount = amount;
+        this.account = account;
+        this.category = category;
+        this.date = date;
+    }
+
+    public Transaction(PaymentType type, LocalDateTime date, BigDecimal amount, Account account, Category category) {
+        this.type = type;
+        this.date = date;
+        this.amount = amount;
+        this.account = account;
+        this.category = category;
+    }
+
+    public static Transaction createTransactionByPlannedPayment(PaymentType type, String description, PlannedPayment plannedPayment) {
+        return new Transaction(type, description, plannedPayment.getAmount(), plannedPayment.getAccount(),
+                plannedPayment.getCategory(), LocalDateTime.now());
+    }
+
+    public long getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(long transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public PaymentType getType() {
+        return type;
+    }
+
+    public void setType(PaymentType type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Set<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(Set<Budget> budgets) {
+        this.budgets = budgets;
+    }
 }

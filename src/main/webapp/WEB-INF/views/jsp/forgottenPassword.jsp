@@ -23,7 +23,7 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="css/css">
 </head>
-<body class="hold-transition register-page" style="background-image:  url(img/infinity3.jpg); overflow:hidden;">
+<body class="hold-transition register-page" style="background-image:  url(img/bckg4.jpg); overflow:hidden;">
 <div class="register-box">
   <div class="register-logo">
     <h1 style="color: white; text-shadow: 0px 0px 15px black;"><b>Finance</b>Tracker</h1>
@@ -37,17 +37,14 @@
 		 <label style="color: red"><c:out value="${forgottenPassword}"/></label>
 	  	</c:if>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Enter your email here to reset your password" required="" name="email" />
+        <input type="email" class="form-control" placeholder="Enter email here to reset your password" required="" name="email" />
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
-      <div class="row">
-        <div class="col-xs-4">
+      <div class="form-group has-feedback">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Send email</button>
-        </div>
       </div>
     </form>
-    <br>
-    I am already registered. <a href="login" class="text-center">Log me in</a>
+      I am already registered. <a href="login" class="text-center"><i class="fa fa-sign-in"></i> Log me in</a>
   </div>
 </div>
 </body></html>

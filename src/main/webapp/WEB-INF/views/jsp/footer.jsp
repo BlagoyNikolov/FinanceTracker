@@ -27,9 +27,9 @@
   <footer class="main-footer">
     <div class="container">
       <div class="pull-right hidden-xs">
-        <b>Version</b> 2.0.0
+        <b>Version</b> 2.1.0
       </div>
-      <strong>Copyright &copy; 2017 | Finance Tracker</strong> All rights reserved.
+      <strong>Copyright &copy; 2018 | Finance Tracker at <i class="fa fa-github"></i><a href="https://github.com/BlagoyNikolov/FinanceTracker"> GitHub</a>.</strong> All rights reserved.
     </div>
     <!-- /.container -->
   </footer>
