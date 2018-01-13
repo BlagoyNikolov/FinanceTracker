@@ -23,10 +23,14 @@
 		<section class="content-header">
 			<h2><c:out value="${accountName}"></c:out></h2>
 			<h1>Current balance <c:out value="${balance}"></c:out></h1>
-			<h1>All transactions</h1>
 		</section>
 		<section class="content">
-			<c:if test="${empty transactions }">
+			<%--<c:if test="${empty transactions }">--%>
+				<%--<h3><i class="ion ion-information-circled"></i>  No records yet</h3>--%>
+				<%--<h4>Track your expenses and income. Start by adding a new record.</h4>--%>
+			<%--</c:if>--%>
+
+			<c:if test="${empty pagedTransactions }">
 				<h3><i class="ion ion-information-circled"></i>  No records yet</h3>
 				<h4>Track your expenses and income. Start by adding a new record.</h4>
 			</c:if>
@@ -34,15 +38,15 @@
 			<div style="margin-bottom: 25px">
 				<div class="row">
 					<div class="col-sm-3">
-						<a href="addTransaction" type="button" class="btn btn-block btn-primary btn-lg"><i class="ion ion-plus"></i> Add new record</a>
+						<a href="/account/addTransaction" type="button" class="btn btn-block btn-primary btn-lg"><i class="ion ion-plus"></i> Add new record</a>
 					</div>
 					<div class="col-sm-3">
 						<a href="<c:url value="/main"></c:url>" type="button" class="btn btn-block btn-default btn-lg"><i class="ion ion-android-arrow-back"></i> Back</a>
 					</div>
 					<div class="col-sm-3">
-						<a href="transfer/accountId/${accountId}" type="button" class="btn btn-block btn-default btn-lg"><i class="ion ion-arrow-swap"></i> Transfer</a>
+						<a href="/account/transfer/accountId/${accountId}" type="button" class="btn btn-block btn-default btn-lg"><i class="ion ion-arrow-swap"></i> Transfer</a>
 					</div>
-					<form action="deleteAccount/${accountId}" method="post" id="deleteForm">
+					<form action="/account/deleteAccount/${accountId}" method="post" id="deleteForm">
 						<div class="col-sm-3">
 							<input id="submitBtn" type="button" name="btn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-block btn-danger btn-lg" value="Delete Account"></input>
 						</div>
@@ -50,43 +54,105 @@
 				</div>
 			</div>
 			
-			<c:forEach items="${transactions }" var="transaction">
-				<div>
-					<a href="transaction/${transaction.transactionId}">
-			            <div class="info-box" style="width: auto;">
-				            <div class="info-box-content">
-				            <div class="row">
-				              	  <div class="col-sm-4">
-						              <h4>Description: <c:out value="${transaction.description }"></c:out></h4>
-						          </div>
-						          <div class="col-sm-4">
-										<fmt:parseDate value="${ transaction.date }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-						              	<h4>Date: <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }" /></h4>
-					              </div>
-				              </div>
-				             <div class="row">
-				              	<div class="col-sm-4">
-						             <c:choose>
-						              <c:when test="${transaction.type eq 'INCOME'}">
-						              	<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
-						              </c:when>
-						              <c:when test="${transaction.type eq 'EXPENSE'}">
-						              	<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
-						              </c:when>
-						              <c:otherwise>
-		       							 <h3>Amount: <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
-		    						  </c:otherwise>
-		    						  </c:choose>
-		    					</div>
-	    						  <div class="col-sm-4">
-				              	  	 <h3>Category: <c:out value="${transaction.categoryName}"></c:out></h3>
-			              	  	 </div>
-				              </div>
-				            </div>
-			            </div>
-		            </a>
-		        </div> 
-			</c:forEach>
+			<%--<c:forEach items="${transactions }" var="transaction">--%>
+				<%--<div>--%>
+					<%--<a href="transaction/${transaction.transactionId}">--%>
+			            <%--<div class="info-box" style="width: auto;">--%>
+				            <%--<div class="info-box-content">--%>
+				            <%--<div class="row">--%>
+				              	  <%--<div class="col-sm-4">--%>
+						              <%--<h4>Description: <c:out value="${transaction.description }"></c:out></h4>--%>
+						          <%--</div>--%>
+						          <%--<div class="col-sm-4">--%>
+										<%--<fmt:parseDate value="${ transaction.date }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+						              	<%--<h4>Date: <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }" /></h4>--%>
+					              <%--</div>--%>
+				              <%--</div>--%>
+				             <%--<div class="row">--%>
+				              	<%--<div class="col-sm-4">--%>
+						             <%--<c:choose>--%>
+						              <%--<c:when test="${transaction.type eq 'INCOME'}">--%>
+						              	<%--<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>--%>
+						              <%--</c:when>--%>
+						              <%--<c:when test="${transaction.type eq 'EXPENSE'}">--%>
+						              	<%--<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>--%>
+						              <%--</c:when>--%>
+						              <%--<c:otherwise>--%>
+		       							 <%--<h3>Amount: <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>--%>
+		    						  <%--</c:otherwise>--%>
+		    						  <%--</c:choose>--%>
+		    					<%--</div>--%>
+	    						  <%--<div class="col-sm-4">--%>
+				              	  	 <%--<h3>Category: <c:out value="${transaction.categoryName}"></c:out></h3>--%>
+			              	  	 <%--</div>--%>
+				              <%--</div>--%>
+				            <%--</div>--%>
+			            <%--</div>--%>
+		            <%--</a>--%>
+		        <%--</div> --%>
+			<%--</c:forEach>--%>
+
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3>All transactions</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<table class="table table-bordered">
+							<tbody>
+								<c:forEach items="${pagedTransactions}" var="transaction">
+									<tr>
+										<div>
+											<a href="/account/transaction/${transaction.transactionId}">
+												<div class="info-box" style="width: auto;">
+													<div class="info-box-content">
+														<div class="row">
+															<div class="col-sm-4">
+																<h4>Description: <c:out value="${transaction.description }"></c:out></h4>
+															</div>
+															<div class="col-sm-4">
+																<fmt:parseDate value="${ transaction.date }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+																<h4>Date: <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }" /></h4>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-4">
+																<c:choose>
+																	<c:when test="${transaction.type eq 'INCOME'}">
+																		<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
+																	</c:when>
+																	<c:when test="${transaction.type eq 'EXPENSE'}">
+																		<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
+																	</c:when>
+																	<c:otherwise>
+																		<h3>Amount: <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></h3>
+																	</c:otherwise>
+																</c:choose>
+															</div>
+															<div class="col-sm-4">
+																<h3>Category: <c:out value="${transaction.categoryName}"></c:out></h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</a>
+										</div>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer clearfix">
+						<ul class="pagination pagination-sm no-margin pull-right">
+							<c:forEach begin="1" end="${pages}" var="i">
+								<li><a href="/account/${accountId}/${i}"><c:out value="${i}"></c:out></a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<!-- /.box -->
+	</div>
 	 	</section>
 	</div>
 	<div>

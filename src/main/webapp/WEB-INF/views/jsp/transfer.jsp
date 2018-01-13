@@ -11,6 +11,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Transfer | Finance Tracker</title>
 <link href="<c:url value="/img/favicon.ico" />" rel="icon" type="image/x-icon">
+<!-- Select2 -->
+<link href="<c:url value="/css/select2.min.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div>
@@ -82,5 +84,12 @@
 <script src="<c:url value="/js/static/adminlte.min.js" />" type ="text/javascript"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<c:url value="/js/static/demo.js" />" type ="text/javascript"></script>
+
+<!-- I hate you -->
+<script type="text/javascript">
+	$(function () {
+		$('.select2').select2()
+	});
+</script>
 </body>
 </html>

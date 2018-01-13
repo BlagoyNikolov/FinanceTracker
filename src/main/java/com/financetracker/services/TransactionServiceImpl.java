@@ -7,15 +7,20 @@ import com.financetracker.model.PaymentType;
 import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 import com.financetracker.repositories.TransactionRepository;
+import com.financetracker.util.TransactionComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -177,4 +182,46 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return result;
     }
+
+    public TreeMap<Integer, List<Transaction>> getAccountTransactionChunks(Long accountId) {
+        TreeMap<Integer, List<Transaction>> result = new TreeMap<>();
+        List<Transaction> transactions = transactionRepository.findByAccountAccountId(accountId);
+        transactions.sort(new TransactionComparator());
+
+        List<List<Transaction>> chunks = chunk(transactions, 5);
+
+        int pageAs = 1;
+        for (List<Transaction> pageCountents : chunks) {
+            result.put(pageAs++, pageCountents);
+        }
+
+        return result;
+    }
+
+    private static <T> List<List<T>> chunk(List<T> input, int chunkSize) {
+        int inputSize = input.size();
+        int chunkCount = (int) Math.ceil(inputSize / (double) chunkSize);
+
+        Map<Integer, List<T>> map = new HashMap<>(chunkCount);
+        List<List<T>> chunks = new ArrayList<>(chunkCount);
+
+        for (int i = 0; i < inputSize; i++) {
+
+            map.computeIfAbsent(i / chunkSize, (ignore) -> {
+
+                List<T> chunk = new ArrayList<>();
+                chunks.add(chunk);
+                return chunk;
+
+            }).add(input.get(i));
+        }
+
+        return chunks;
+    }
+
+    public List<Transaction> getPagingTransactions(Long accountId, int page) {
+        TreeMap<Integer, List<Transaction>> transactions = getAccountTransactionChunks(accountId);
+        return  transactions.get(page);
+    }
+
 }

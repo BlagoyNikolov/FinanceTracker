@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,10 +21,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/account")
@@ -46,10 +40,9 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @RequestMapping(value = "/{accountId}", method = RequestMethod.GET)
-    public String getAllTransactions(HttpServletRequest request, HttpSession session, @PathVariable("accountId") Long accountId) {
+    public String getAllTransactions(HttpServletRequest request, HttpSession session, @PathVariable("accountId") Long accountId, Model model) {
         User user = (User) session.getAttribute("user");
-        TreeSet<Transaction> transactions = new TreeSet<>(new TransactionComparator()
-        );
+        TreeSet<Transaction> transactions = new TreeSet<>(new TransactionComparator());
         Set<Category> allCategories = new HashSet<Category>();
         request.getSession().setAttribute("accountId", accountId);
         transactions.addAll(transactionService.getAllTransactionsByAccountId(accountId));
@@ -60,8 +53,15 @@ public class TransactionController {
         allCategories.addAll(ownCategories);
         Set<Account> accounts = accountService.getAllAccountsByUser(user);
         String accountName = accountService.getAccountNameByAccountId(accountId);
-
         String balance = NumberFormat.getCurrencyInstance(Locale.US).format(accountBalance);
+        List<Transaction> transactionsPaged = transactionService.getPagingTransactions(accountId, 1);
+
+        int allCount = transactionService.getAllTransactionsByAccountId(accountId).size();
+        int pages = (int) Math.ceil(allCount / (double) 5);
+
+        model.addAttribute("pages", pages);
+        model.addAttribute("pagedTransactions", transactionsPaged);
+        model.addAttribute("accountId", accountId);
         request.getSession().setAttribute("categories", allCategories);
         request.getSession().setAttribute("accounts", accounts);
         request.getSession().setAttribute("accountName", accountName);
@@ -202,5 +202,25 @@ public class TransactionController {
         Transaction transaction = transactionService.getTransactionByTransactionId(transactionId);
         transactionService.deleteTransaction(user, transactionId);
         return "redirect:/account/" + transaction.getAccount().getAccountId();
+    }
+
+    @GetMapping(value = "/{accountId}/{page}")
+    public String paging(@PathVariable("accountId") Long accountId, @PathVariable("page") int page, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        List<Transaction> transactionsPaged = transactionService.getPagingTransactions(accountId, page);
+        int allCount = transactionService.getAllTransactionsByAccountId(accountId).size();
+        int pages = (int) Math.ceil(allCount / (double) 5);
+        String accountName = accountService.getAccountNameByAccountId(accountId);
+        BigDecimal accountBalance = accountService.getAmountByAccountId(accountId);
+        String balance = NumberFormat.getCurrencyInstance(Locale.US).format(accountBalance);
+        Set<Account> accounts = accountService.getAllAccountsByUser(user);
+
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("accountName", accountName);
+        model.addAttribute("balance", balance);
+        model.addAttribute("pagedTransactions", transactionsPaged);
+        model.addAttribute("accountId", accountId);
+        model.addAttribute("pages", pages);
+        return "transactions";
     }
 }
