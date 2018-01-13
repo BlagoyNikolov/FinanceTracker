@@ -39,7 +39,7 @@ The FinanceTracker is a web based Java Application which helps you manage your b
 ![screenshot 44](https://user-images.githubusercontent.com/13378612/34904841-87764b6a-f856-11e7-8c9a-fa40c7c81ac6.png)
 
 ### View Transactions
-![screenshot 45](https://user-images.githubusercontent.com/13378612/34904844-8a20b6f2-f856-11e7-9aab-a470b67d9013.png)
+![screenshot 53](https://user-images.githubusercontent.com/13378612/34910796-112a8fe2-f8c5-11e7-9c60-73a3b86346d6.png)
 
 ### Budgets
 ![screenshot 46](https://user-images.githubusercontent.com/13378612/34904847-8ba9c3ec-f856-11e7-9eef-3e53b81623e3.png)
@@ -54,5 +54,5 @@ The FinanceTracker is a web based Java Application which helps you manage your b
 ![screenshot 49](https://user-images.githubusercontent.com/13378612/34904850-8f8e5888-f856-11e7-9515-26edaa6a2c2d.png)
 
 ### Reports
-![screenshot 50](https://user-images.githubusercontent.com/13378612/34904851-90d0cd34-f856-11e7-8081-8f9c64635bb5.png)
+![screenshot 54](https://user-images.githubusercontent.com/13378612/34910795-110f18d4-f8c5-11e7-9495-a95aeffc208b.png)
 
