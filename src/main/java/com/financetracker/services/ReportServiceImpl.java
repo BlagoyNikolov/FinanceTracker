@@ -6,15 +6,13 @@ import com.financetracker.model.PaymentType;
 import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 import com.financetracker.util.DateConverters;
+import com.financetracker.util.PagingUtil;
 import com.financetracker.util.TransactionComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,5 +91,26 @@ public class ReportServiceImpl implements ReportService {
             });
         }
         return result;
+    }
+
+    public TreeMap<Integer, List<Transaction>> getTransactionChunks(User user,  TreeSet<Transaction> allTransactions, int page) {
+        TreeMap<Integer, List<Transaction>> result = new TreeMap<>();
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.addAll(allTransactions);
+        transactions.sort(new TransactionComparator());
+
+        List<List<Transaction>> chunks = PagingUtil.chunk(transactions, 10);
+
+        int pageAs = 1;
+        for (List<Transaction> pageCountents : chunks) {
+            result.put(pageAs++, pageCountents);
+        }
+
+        return result;
+    }
+
+    public List<Transaction> getPagingTransactions(User user, TreeSet<Transaction> allTransactions, int page) {
+        TreeMap<Integer, List<Transaction>> transactions = getTransactionChunks(user, allTransactions, page);
+        return  transactions.get(page);
     }
 }

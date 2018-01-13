@@ -48,9 +48,9 @@
 		        <ul class="nav navbar-nav">
 		          <!-- User Account: style can be found in dropdown.less -->
 					<li>
-						<form role="form" action="search" method="get">
-							<div class="input-group margin" style="width: 200px;">
-								<input type="text" class="form-control" placeholder="Search for info here" name="keyword">
+						<form role="form" action="/search" method="get">
+							<div class="input-group margin" style="width: 250px;">
+								<input type="text" class="form-control" placeholder="Search for info here..." name="keyword">
 								<span class="input-group-btn">
 									<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
 								</span>

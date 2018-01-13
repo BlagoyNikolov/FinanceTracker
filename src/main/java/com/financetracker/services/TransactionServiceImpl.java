@@ -7,6 +7,7 @@ import com.financetracker.model.PaymentType;
 import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 import com.financetracker.repositories.TransactionRepository;
+import com.financetracker.util.PagingUtil;
 import com.financetracker.util.TransactionComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -188,7 +189,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> transactions = transactionRepository.findByAccountAccountId(accountId);
         transactions.sort(new TransactionComparator());
 
-        List<List<Transaction>> chunks = chunk(transactions, 10);
+        List<List<Transaction>> chunks = PagingUtil.chunk(transactions, 10);
 
         int pageAs = 1;
         for (List<Transaction> pageCountents : chunks) {
@@ -196,27 +197,6 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         return result;
-    }
-
-    private static <T> List<List<T>> chunk(List<T> input, int chunkSize) {
-        int inputSize = input.size();
-        int chunkCount = (int) Math.ceil(inputSize / (double) chunkSize);
-
-        Map<Integer, List<T>> map = new HashMap<>(chunkCount);
-        List<List<T>> chunks = new ArrayList<>(chunkCount);
-
-        for (int i = 0; i < inputSize; i++) {
-
-            map.computeIfAbsent(i / chunkSize, (ignore) -> {
-
-                List<T> chunk = new ArrayList<>();
-                chunks.add(chunk);
-                return chunk;
-
-            }).add(input.get(i));
-        }
-
-        return chunks;
     }
 
     public List<Transaction> getPagingTransactions(Long accountId, int page) {

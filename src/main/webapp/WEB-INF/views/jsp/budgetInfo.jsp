@@ -42,41 +42,57 @@
 						</form>
 					</div>
 				</div>
-				
-				<c:forEach items="${ budgetTransactions }" var="transaction">
-					<div>
-						<div class="info-box" style="width: auto;">
-							<div class="info-box-content">
-							<div class="row">
-								  <div class="col-sm-4">
-									  <h4>Description: <c:out value="${ transaction.description }"></c:out></h4>
-								  </div>
-								  <div class="col-sm-4">
-									  <h4>Date: <fmt:parseDate value="${ transaction.date }" pattern="yyyy-MM-dd" /></h4>
-								  </div>
-							  </div>
-							 <div class="row">
-								<div class="col-sm-4">
-									 <c:choose>
-									  <c:when test="${ transaction.type eq 'INCOME' }">
-										<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${ transaction.amount }" minFractionDigits="2"/></h3>
-									  </c:when>
-									  <c:when test="${ transaction.type eq 'EXPENSE'}">
-										<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${ transaction.amount }" minFractionDigits="2"/></h3>
-									  </c:when>
-									  <c:otherwise>
-										 <h3>Amount: <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${ transaction.amount }" minFractionDigits="2"/></h3>
-									  </c:otherwise>
-									  </c:choose>
-								</div>
-								  <div class="col-sm-4">
-									 <h3>Category: <c:out value="${ transaction.categoryName }"></c:out></h3>
-								 </div>
-							  </div>
-							</div>
-						</div>
+
+				<div class="box box-primary">
+					<div class="box-body">
+						<table class="table table-bordered">
+							<tbody>
+							<tr>
+								<th>Description</th>
+								<th>Date</th>
+								<th>Amount (USD)</th>
+								<th>Category</th>
+							</tr>
+							<c:forEach items="${pagedTransactions}" var="transaction">
+								<tr>
+									<td>
+										<p style="font-size: 21px;"><c:out value="${transaction.description }"></c:out></p>
+									</td>
+
+									<fmt:parseDate value="${ transaction.date }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+									<td>
+										<p style="font-size: 21px;"><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }" /></p>
+									</td>
+
+									<c:choose>
+										<c:when test="${transaction.type eq 'INCOME'}">
+											<td style="color: green;">
+												<p style="font-size: 21px;">+ <fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></p>
+											</td>
+										</c:when>
+										<c:when test="${transaction.type eq 'EXPENSE'}">
+											<td style="color: red;">
+												<p style="font-size: 21px;">- <fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></p>
+											</td>
+										</c:when>
+									</c:choose>
+									<td>
+										<p style="font-size: 21px;"><c:out value="${transaction.categoryName}"></c:out></p>
+									</td>
+								</tr>
+							</c:forEach>
+							</tbody>
+						</table>
 					</div>
-				</c:forEach>
+					<!-- /.box-body -->
+					<div class="box-footer clearfix">
+						<ul class="pagination pagination-sm no-margin pull-right">
+							<c:forEach begin="1" end="${pages}" var="i">
+								<li><a href="/budgets/${budgetId}/${i}"><c:out value="${i}"></c:out></a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
 			</section>
 		</div>
 

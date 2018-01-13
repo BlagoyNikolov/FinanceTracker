@@ -46,4 +46,6 @@ public interface BudgetService {
     Set<Budget> getAllBudgetsByUser(User user);
 
     Budget getBudgetByBudgetId(long budgetId);
+
+    List<Transaction> getPagingTransactions(Long budgetId, int page);
 }

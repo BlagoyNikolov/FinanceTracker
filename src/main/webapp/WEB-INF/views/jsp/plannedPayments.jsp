@@ -24,7 +24,7 @@
 			<h2>All planned payments</h2>
 		</section>
 		<section class="content">
-			<c:if test="${empty plannedPayments}">
+			<c:if test="${empty pagedPlannedPayments}">
 				<h3><i class="ion ion-information-circled"></i>  No planned playments yet</h3>
 				<h4>Plan and strategize. Start by adding a new planned playment.</h4>
 			</c:if>
@@ -32,52 +32,68 @@
 			<div style="margin-bottom: 25px">
 				<div class="row">
 					<div class="col-sm-3">
-						<a href="addPlannedPayment" type="button" class="btn btn-block btn-primary btn-lg"><i class="ion ion-plus"></i> Add new payment</a>
+						<a href="/addPlannedPayment" type="button" class="btn btn-block btn-primary btn-lg"><i class="ion ion-plus"></i> Add new payment</a>
 					</div>
 					<div class="col-sm-3">
 						<a href="<c:url value="/main"></c:url>" type="button" class="btn btn-block btn-default btn-lg"><i class="ion ion-android-arrow-back"></i> Back</a>
 					</div>
 				</div>
 			</div>
-			
-			<c:forEach items="${plannedPayments}" var="payment">
-				<div>
-					<a href="payment/${payment.plannedPaymentId}">
-						<div class="info-box" style="width: auto;">
-							 <div class="info-box-content">
-							 	<div class="row">
-							 		<div class="col-sm-4">
-							 			<h3>Name: <c:out value="${payment.name}"></c:out></h3>
-							 		</div>
-							 		<div class="col-sm-4">
-							 			<fmt:parseDate value="${ payment.fromDate }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-										<h4>Will occur on: <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }" /></h4>
-									</div>
-							 	</div>
-							 	<div class="row">
-				              		<div class="col-sm-4">
-							            <c:choose>
-											<c:when test="${payment.paymentType eq 'INCOME'}">
-												<h3 style="color: green;">Amount: + <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${payment.amount}" minFractionDigits="2"/></h3>
-											</c:when>
-											<c:when test="${payment.paymentType eq 'EXPENSE'}">
-												<h3 style="color: red;">Amount: - <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${payment.amount}" minFractionDigits="2"/></h3>
-											</c:when>
-											<c:otherwise>
-												<h3>Amount: <i class="ion-social-usd" style="font-size: 20px;"> </i><fmt:formatNumber value="${payment.amount}" minFractionDigits="2"/></h3>
-											</c:otherwise>
-										</c:choose>
-									</div>
-									
-									<div class="col-sm-4">
-							 			<h4>Category: <c:out value="${payment.category.name}"></c:out></h4>
-							 		</div>
-				             	</div>
-							 </div>
-						</div>
-					</a>
-				</div> 
-			</c:forEach>
+
+			<div class="box box-primary">
+				<div class="box-body">
+					<table class="table table-bordered">
+						<tbody>
+						<tr>
+							<th>Description</th>
+							<th>Date</th>
+							<th>Amount (USD)</th>
+							<th>Category</th>
+							<th>Edit</th>
+						</tr>
+						<c:forEach items="${pagedPlannedPayments}" var="plannedPayment">
+							<tr>
+								<td>
+									<p style="font-size: 21px;"><c:out value="${plannedPayment.description }"></c:out></p>
+								</td>
+
+								<fmt:parseDate value="${ plannedPayment.fromDate }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+								<td>
+									<p style="font-size: 21px;"><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }" /></p>
+								</td>
+
+								<c:choose>
+									<c:when test="${plannedPayment.paymentType eq 'INCOME'}">
+										<td style="color: green;">
+											<p style="font-size: 21px;">+ <fmt:formatNumber value="${plannedPayment.amount}" minFractionDigits="2"/></p>
+										</td>
+									</c:when>
+									<c:when test="${plannedPayment.paymentType eq 'EXPENSE'}">
+										<td style="color: red;">
+											<p style="font-size: 21px;">- <fmt:formatNumber value="${plannedPayment.amount}" minFractionDigits="2"/></p>
+										</td>
+									</c:when>
+								</c:choose>
+								<td>
+									<p style="font-size: 21px;"><c:out value="${plannedPayment.category.name}"></c:out></p>
+								</td>
+								<td>
+									<a href="/payment/${plannedPayment.plannedPaymentId}"><i class="ionicons ion-edit" style="font-size: 21px;"></i></a>
+								</td>
+							</tr>
+						</c:forEach>
+						</tbody>
+					</table>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer clearfix">
+					<ul class="pagination pagination-sm no-margin pull-right">
+						<c:forEach begin="1" end="${pages}" var="i">
+							<li><a href="/plannedPayments/${i}"><c:out value="${i}"></c:out></a></li>
+						</c:forEach>
+					</ul>
+				</div>
+			</div>
 	 	</section>
 	</div>
 	<div>

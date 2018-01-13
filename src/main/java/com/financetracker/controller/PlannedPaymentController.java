@@ -45,11 +45,13 @@ public class PlannedPaymentController {
     private UserService userService;
 
     @RequestMapping(value = "/plannedPayments", method = RequestMethod.GET)
-    public String getAllPlannedPayments(HttpServletRequest request, HttpSession session) {
+    public String getAllPlannedPayments(HttpServletRequest request, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
 
         Set<Category> allCategories = new HashSet<Category>();
+        List<PlannedPayment> plannedPaymentsPaged = plannedPaymentService.getPagingPlannedPayments(user, 1);
         List<PlannedPayment> plannedPayments = plannedPaymentService.getAllPlannedPaymentsByUser(user);
+        int pages = (int) Math.ceil(plannedPayments.size() / (double) 10);
         Set<Category> categories = categoryService.getAllCategoriesByUserId();
         Set<Category> ownCategories = categoryService.getAllCategoriesByUserId(user.getUserId());
         allCategories.addAll(categories);
@@ -59,6 +61,8 @@ public class PlannedPaymentController {
         request.getSession().setAttribute("plannedPayments", plannedPayments);
         request.getSession().setAttribute("accounts", accounts);
         request.getSession().setAttribute("categories", allCategories);
+        model.addAttribute("pagedPlannedPayments", plannedPaymentsPaged);
+        model.addAttribute("pages", pages);
 
         return "plannedPayments";
     }
@@ -183,5 +187,27 @@ public class PlannedPaymentController {
         plannedPaymentService.deletePlannedPayment(plannedPaymentId);
 
         return "redirect:/plannedPayments";
+    }
+
+    @RequestMapping(value = "/plannedPayments/{page}", method = RequestMethod.GET)
+    public String plannedPaymentPaging(@PathVariable("page") int page, HttpSession session, HttpServletRequest request, Model model) {
+        User user = (User) session.getAttribute("user");
+        List<PlannedPayment> plannedPaymentsPaged = plannedPaymentService.getPagingPlannedPayments(user, page);
+        List<PlannedPayment> plannedPayments = plannedPaymentService.getAllPlannedPaymentsByUser(user);
+        int pages = (int) Math.ceil(plannedPayments.size() / (double) 10);
+        Set<Category> allCategories = new HashSet<Category>();
+        Set<Category> categories = categoryService.getAllCategoriesByUserId();
+        Set<Category> ownCategories = categoryService.getAllCategoriesByUserId(user.getUserId());
+        allCategories.addAll(categories);
+        allCategories.addAll(ownCategories);
+        Set<Account> accounts = accountService.getAllAccountsByUser(user);
+
+        request.getSession().setAttribute("plannedPayments", plannedPayments);
+        request.getSession().setAttribute("accounts", accounts);
+        request.getSession().setAttribute("categories", allCategories);
+        model.addAttribute("pagedPlannedPayments", plannedPaymentsPaged);
+        model.addAttribute("pages", pages);
+
+        return "plannedPayments";
     }
 }

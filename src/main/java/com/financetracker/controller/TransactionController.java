@@ -205,7 +205,7 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/{accountId}/{page}")
-    public String paging(@PathVariable("accountId") Long accountId, @PathVariable("page") int page, HttpSession session, Model model) {
+    public String transactionPaging(@PathVariable("accountId") Long accountId, @PathVariable("page") int page, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         List<Transaction> transactionsPaged = transactionService.getPagingTransactions(accountId, page);
         int allCount = transactionService.getAllTransactionsByAccountId(accountId).size();

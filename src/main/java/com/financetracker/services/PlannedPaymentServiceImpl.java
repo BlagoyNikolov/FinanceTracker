@@ -2,6 +2,9 @@ package com.financetracker.services;
 
 import com.financetracker.model.*;
 import com.financetracker.repositories.PlannedPaymentRepository;
+import com.financetracker.util.PagingUtil;
+import com.financetracker.util.PlannedPaymentComparator;
+import com.financetracker.util.TransactionComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
 public class PlannedPaymentServiceImpl implements PlannedPaymentService {
@@ -106,5 +110,26 @@ public class PlannedPaymentServiceImpl implements PlannedPaymentService {
         }
         transactionService.insertTransaction(transaction);
         this.deletePlannedPayment(plannedPayment.getPlannedPaymentId());
+    }
+
+    public TreeMap<Integer, List<PlannedPayment>> getPlannedPaymentsChunks(User user) {
+        TreeMap<Integer, List<PlannedPayment>> result = new TreeMap<>();
+        List<PlannedPayment> plannedPayments = this.getAllPlannedPaymentsByUser(user);
+        plannedPayments.sort(new PlannedPaymentComparator());
+
+        List<List<PlannedPayment>> chunks = PagingUtil.chunk(plannedPayments, 10);
+
+        int pageAs = 1;
+        for (List<PlannedPayment> pageCountents : chunks) {
+            result.put(pageAs++, pageCountents);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<PlannedPayment> getPagingPlannedPayments(User user, int page) {
+        TreeMap<Integer, List<PlannedPayment>> plannedPayments = getPlannedPaymentsChunks(user);
+        return  plannedPayments.get(page);
     }
 }

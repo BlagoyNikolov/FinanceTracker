@@ -31,4 +31,6 @@ public interface PlannedPaymentService {
     List<PlannedPayment> getAllPlannedPaymentsByUser(User user);
 
     void plannedPaymentDailyCronJob();
+
+    List<PlannedPayment> getPagingPlannedPayments(User user, int page);
 }

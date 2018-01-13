@@ -5,7 +5,9 @@ import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -20,4 +22,6 @@ public interface ReportService {
 
     Set<Transaction> getReportTransactions(User user, String type, long categoryId, long accountId,
                                            LocalDateTime from, LocalDateTime to);
+
+    List<Transaction> getPagingTransactions(User user, TreeSet<Transaction> allTransactions, int page);
 }

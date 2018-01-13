@@ -46,10 +46,6 @@
                  				var budgetName = '${ name }';
 								document.getElementById("bName").value = budgetName;
 							</script>
-						  <!-- 	<script type="text/javascript">
-			       				var date = '${ date }';
-								document.getElementById("reservationtime").value = date;
-							</script> -->
                			</div>
 			            
 		                <div class="form-group">
@@ -77,31 +73,26 @@
 		                  <label>Amount</label>
 		                  <f:input type="text" class="form-control" placeholder="Amount" path="initialAmount" value="${ editBudgetAmount }" />
 		                </div>
-			            
-			              <!-- Date and time range -->
-              <div class="form-group">
-                <label>Date and time range:</label>
+             			 <div class="form-group">
+                			<label>Date and time range:</label>
+							 <div class="input-group">
+                  				<div class="input-group-addon">
+                    				<i class="fa fa-clock-o"></i>
+                  				</div>
+								  <input type="text" class="form-control pull-right" id="reservationtime" name="date">
+								  <script type="text/javascript">
+									var date = '${ date }';
+									document.getElementById("reservationtime").value = date;
+								  </script>
+							 </div>
 
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-clock-o"></i>
-                  </div>
-                  <input type="text" class="form-control pull-right" id="reservationtime" name="date">
-                  <script type="text/javascript">
-       				var date = '${ date }';
-					document.getElementById("reservationtime").value = date;
-				</script>
-                </div>
-                <!-- /.input group -->
-              </div>
-              <!-- /.form group -->
+						 </div>
               
-               <div class="box-footer">
-		                <button type="submit" class="btn btn-primary">Save</button>
-		                <a href='<c:url value='/budgets/${ budgetId }'></c:url>' class="btn btn-default">Cancel</a>
-		              </div>
-		              
-	               </div>
+               			<div class="box-footer">
+							<button type="submit" class="btn btn-primary">Save</button>
+							<a href='<c:url value='/budgets/${ budgetId }'></c:url>' class="btn btn-default">Cancel</a>
+		              	</div>
+	               	</div>
 		            </f:form>
 	          	</div>
         	</div>

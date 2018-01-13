@@ -50,12 +50,11 @@
 			</div>
 
             <div class="box box-primary">
-                <!-- /.box-header -->
                 <div class="box-body">
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
-                                <th >Description</th>
+                                <th>Description</th>
                                 <th>Date</th>
                                 <th>Amount (USD)</th>
                                 <th>Category</th>
@@ -75,12 +74,12 @@
                                             <c:choose>
                                                 <c:when test="${transaction.type eq 'INCOME'}">
                                                     <td style="color: green;">
-                                                        <p style="font-size: 21px;"><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></p>
+                                                        <p style="font-size: 21px;">+ <fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></p>
                                                     </td>
                                                 </c:when>
                                                 <c:when test="${transaction.type eq 'EXPENSE'}">
                                                     <td style="color: red;">
-                                                        <p style="font-size: 21px;"><fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></p>
+                                                        <p style="font-size: 21px;">- <fmt:formatNumber value="${transaction.amount}" minFractionDigits="2"/></p>
                                                     </td>
                                                 </c:when>
                                             </c:choose>

@@ -7,18 +7,15 @@ import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 import com.financetracker.repositories.BudgetRepository;
 import com.financetracker.util.DateConverters;
+import com.financetracker.util.PagingUtil;
+import com.financetracker.util.TransactionComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 public class BudgetServiceImpl implements BudgetService {
@@ -28,9 +25,6 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CategoryService categoryService;
@@ -200,4 +194,29 @@ public class BudgetServiceImpl implements BudgetService {
     public Budget getBudgetByBudgetId(long budgetId) {
         return budgetRepository.findByBudgetId(budgetId);
     }
+
+    private TreeMap<Integer,List<Transaction>> getAccountTransactionChunks(Long budgetId, int page) {
+        TreeMap<Integer, List<Transaction>> result = new TreeMap<>();
+        TreeSet<Transaction> transactions = this.getBudgetTransactions(budgetId);
+        List<Transaction> transactionsList = new ArrayList<>();
+        transactionsList.addAll(transactions);
+        transactionsList.sort(new TransactionComparator());
+
+        List<List<Transaction>> chunks = PagingUtil.chunk(transactionsList, 10);
+
+        int pageAs = 1;
+        for (List<Transaction> pageCountents : chunks) {
+            result.put(pageAs++, pageCountents);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<Transaction> getPagingTransactions(Long budgetId, int page) {
+        TreeMap<Integer, List<Transaction>> transactions = getAccountTransactionChunks(budgetId, page);
+        return  transactions.get(page);
+    }
+
+
 }
