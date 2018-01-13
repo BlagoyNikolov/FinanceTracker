@@ -19,3 +19,14 @@ The FinanceTracker is a web based Java Application which helps you manage your b
 
 ## View cashflow trends
 ![screenshot 298](https://user-images.githubusercontent.com/13378612/32413821-3822debc-c222-11e7-9668-819f37209a50.png)
+
+![screenshot 42](https://user-images.githubusercontent.com/13378612/34904839-82fdfe16-f856-11e7-8077-0c7d774fb06a.png)
+![screenshot 43](https://user-images.githubusercontent.com/13378612/34904840-854883d0-f856-11e7-946c-c929105c21d7.png)
+![screenshot 44](https://user-images.githubusercontent.com/13378612/34904841-87764b6a-f856-11e7-8c9a-fa40c7c81ac6.png)
+![screenshot 45](https://user-images.githubusercontent.com/13378612/34904844-8a20b6f2-f856-11e7-9aab-a470b67d9013.png)
+![screenshot 46](https://user-images.githubusercontent.com/13378612/34904847-8ba9c3ec-f856-11e7-9eef-3e53b81623e3.png)
+![screenshot 47](https://user-images.githubusercontent.com/13378612/34904848-8d22ac98-f856-11e7-9db0-3ae02623ff97.png)
+![screenshot 48](https://user-images.githubusercontent.com/13378612/34904849-8e2fd7aa-f856-11e7-9c31-77486ee61fbd.png)
+![screenshot 49](https://user-images.githubusercontent.com/13378612/34904850-8f8e5888-f856-11e7-9515-26edaa6a2c2d.png)
+![screenshot 50](https://user-images.githubusercontent.com/13378612/34904851-90d0cd34-f856-11e7-8081-8f9c64635bb5.png)
+
