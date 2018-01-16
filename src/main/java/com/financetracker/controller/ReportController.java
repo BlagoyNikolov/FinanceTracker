@@ -92,4 +92,33 @@ public class ReportController {
 
         return "reports";
     }
+
+    @RequestMapping(value = "/reports/filtered/{page}", method = RequestMethod.GET)
+    public String filterTransactionsByPage(@PathVariable("page") int page, HttpServletRequest request, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        String date = request.getParameter("dateFiler");
+        String type = request.getParameter("typeFiler");
+        String categoryName = request.getParameter("categoryFiler");
+        String accName = request.getParameter("accountFiler");
+
+        Set<Account> allAccounts = new TreeSet<>((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+        TreeSet<Transaction> transactions = reportService.getFilteredReportTransactions(user, categoryName, type, accName, date, allAccounts);
+
+        List<Transaction> transactionsPaged = reportService.getPagingTransactions(user, transactions, page);
+        int allCount = transactions.size();
+        int pages = (int) Math.ceil(allCount / (double) 10);
+
+        model.addAttribute("date", date);
+        model.addAttribute("type", type);
+        model.addAttribute("category", categoryName);
+        model.addAttribute("account", accName);
+        model.addAttribute("allAccounts", allAccounts);
+        model.addAttribute("allTransactions", transactions);
+        model.addAttribute("pages", pages);
+        model.addAttribute("pagedTransactions", transactionsPaged);
+        model.addAttribute("filtered", true);
+
+        return "reports";
+    }
 }

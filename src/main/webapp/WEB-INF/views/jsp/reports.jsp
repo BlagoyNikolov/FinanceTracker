@@ -71,7 +71,6 @@
 			                  <option>All types</option>
 			                  <option>EXPENSE</option>
 			                  <option>INCOME</option>
-			                  
 			                </select>
 			            </div>
 	                </div>
@@ -91,7 +90,7 @@
 	                <div class="col-sm-2" style="display:table-cell; vertical-align:middle; text-align:center">
 	                 <div class="form-group">
 			                <label>Account</label>
-			                <select class="form-control select2" style="width: 100%;" data-placeholder="Select an account" name="account">
+			                <select class="form-control select2" style="width: 100%;" data-placeholder="Select an account" name="account" id="account">
 			            <%--       <option selected="selected"><c:out value="${ sessionScope.accountName }"></c:out></option> --%>
 			            	<option>All accounts</option>
 			                  <c:forEach items="${allAccounts}" var="account">
@@ -161,7 +160,17 @@
 						<c:choose>
 							<c:when test="${filtered eq 'true'}">
 								<c:forEach begin="1" end="${pages}" var="i">
-									<li><a href="/reports/filtered/${i}"><c:out value="${i}"></c:out></a></li>
+									<%--<li><a href="/reports/filtered/${i}"><c:out value="${i}"></c:out></a></li>--%>
+									<li>
+										<form action="/reports/filtered/${i}" method="get" id="pageForm">
+											<input type="hidden" value="" name="dateFiler" id="dateReport">
+											<input type="hidden" value="" name="typeFiler" id="typeReport">
+											<input type="hidden" value="" name="categoryFiler" id="categoryReport">
+											<input type="hidden" value="" name="accountFiler" id="accountReport">
+
+											<button type="submit" onclick="reportFunction()"><c:out value="${i}"></c:out></button>
+										</form>
+									</li>
 								</c:forEach>
 							</c:when>
 							<c:when test="${filtered eq 'false'}">
@@ -189,8 +198,7 @@
 		$(function () {
 			$('.select2').select2()
 			$('#reservationtime').daterangepicker({ timePicker: false, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
-		});
-		
+        });
 		
 		function myFunction() {
 		    var request = new XMLHttpRequest();
@@ -213,6 +221,18 @@
             request.open("GET", "/account/getCategory/"+sel);
 		    request.send();
 		}
+
+		function reportFunction() {
+            var date = $('#reservationtime').val();
+            var type = $('#type').val();
+            var category = $('#category').val();
+            var account = $('#account').val();
+
+            $("#dateReport").val(date);
+            $("#typeReport").val(type);
+            $("#categoryReport").val(category);
+            $("#accountReport").val(account);
+        }
 		
 	</script>
 </body>
