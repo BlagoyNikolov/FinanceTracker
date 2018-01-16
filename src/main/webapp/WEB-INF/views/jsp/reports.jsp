@@ -163,12 +163,12 @@
 									<%--<li><a href="/reports/filtered/${i}"><c:out value="${i}"></c:out></a></li>--%>
 									<li>
 										<form action="/reports/filtered/${i}" method="get" id="pageForm">
-											<input type="hidden" value="" name="dateFiler" id="dateReport">
-											<input type="hidden" value="" name="typeFiler" id="typeReport">
-											<input type="hidden" value="" name="categoryFiler" id="categoryReport">
-											<input type="hidden" value="" name="accountFiler" id="accountReport">
+											<input type="hidden" value="" name="dateFiler" id="dateReport${i}">
+											<input type="hidden" value="" name="typeFiler" id="typeReport${i}">
+											<input type="hidden" value="" name="categoryFiler" id="categoryReport${i}">
+											<input type="hidden" value="" name="accountFiler" id="accountReport${i}">
 
-											<button type="submit" onclick="reportFunction()"><c:out value="${i}"></c:out></button>
+											<button type="submit" onclick="reportFunction(${i})"><c:out value="${i}"></c:out></button>
 										</form>
 									</li>
 								</c:forEach>
@@ -222,16 +222,16 @@
 		    request.send();
 		}
 
-		function reportFunction() {
+		function reportFunction(page) {
             var date = $('#reservationtime').val();
             var type = $('#type').val();
             var category = $('#category').val();
             var account = $('#account').val();
 
-            $("#dateReport").val(date);
-            $("#typeReport").val(type);
-            $("#categoryReport").val(category);
-            $("#accountReport").val(account);
+            $("#dateReport"+page).val(date);
+            $("#typeReport"+page).val(type);
+            $("#categoryReport"+page).val(category);
+            $("#accountReport"+page).val(account);
         }
 		
 	</script>
