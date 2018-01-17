@@ -28,7 +28,7 @@
 		<section class="content">
 			<div class="col-md-6">
 		        <div class="box box-primary">
-		            <form role="form" action="transfer" method="post">
+		            <form role="form" action="transfer" method="post" id="submitForm">
 		            <c:if test="${error!=null}">
 			 			<label style="color: red"><c:out value="${error}"/></label>
 		  			 </c:if>
@@ -56,7 +56,7 @@
 			            </div>
                		  </div>
                		  <div class="box-footer">
-		                <button type="submit" class="btn btn-primary">Execute</button>
+		                <input id="submitBtn" type="button" name="btn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary" value="Execute"></input>
 		                <a href="<c:url value="/account/${sessionScope.accountId}"></c:url>" class="btn btn-default">Cancel</a>
 		              </div>
 		            </form>
@@ -67,6 +67,34 @@
 	<div>
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>
+
+	<div class="modal fade in" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h3 class="modal-title">Confirm transfer</h3>
+				</div>
+				<div class="modal-body">
+					<h4>Are you sure you want to execute the transfer?</h4>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+					<a href="#" id="submit" class="btn btn-success success">Proceed</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+        $('#submit').click(function(){
+            /* when the submit button in the modal is clicked, submit the form */
+            $('#submitForm').submit();
+        });
+	</script>
 	
 <!-- jQuery 3 -->
 <script src="<c:url value="/js/jquery.min.js" />" type ="text/javascript"></script>

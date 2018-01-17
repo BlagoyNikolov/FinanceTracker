@@ -27,6 +27,14 @@ The FinanceTracker is a web based Java Application which helps you manage your b
 * IntelliJ IDEA IDE
 * Git
 
+## How to set up and run the project?
+
+* Build with Maven
+* Create only the MySQL schema (finance_tracker_hibernate), hibernate will populate it with the tables 
+  OR
+  Run the SQL creation script provided in this repository (/diagrams and model)
+* No additional configuration required
+
 ## Screenshots
 
 ### Login page
