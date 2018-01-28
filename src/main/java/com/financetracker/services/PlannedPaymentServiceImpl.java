@@ -82,7 +82,7 @@ public class PlannedPaymentServiceImpl implements PlannedPaymentService {
         return plannedPaymentRepository.findByAccountUser(user);
     }
 
-    @Scheduled(cron = "0 38 23 * * ?", zone = "Europe/Athens") //Fire at 9:00am every day
+    @Scheduled(cron = "0 0 9 * * ?", zone = "Europe/Athens") //Fire at 9:00am every day
     public void plannedPaymentDailyCronJob() {
         LocalDate localDate = LocalDateTime.now().toLocalDate();
         LocalDateTime localDateTime = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), 0, 0, 0);
