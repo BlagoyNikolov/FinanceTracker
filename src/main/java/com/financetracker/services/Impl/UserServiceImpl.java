@@ -1,13 +1,13 @@
-package com.financetracker.services;
+package com.financetracker.services.Impl;
 
 import com.financetracker.model.User;
 import com.financetracker.repositories.UserRepository;
+import com.financetracker.services.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {

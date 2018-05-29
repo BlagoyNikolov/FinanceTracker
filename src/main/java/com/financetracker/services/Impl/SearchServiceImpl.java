@@ -1,4 +1,4 @@
-package com.financetracker.services;
+package com.financetracker.services.Impl;
 
 import com.financetracker.model.Budget;
 import com.financetracker.model.PlannedPayment;
@@ -6,6 +6,8 @@ import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 import com.financetracker.repositories.PlannedPaymentRepository;
 import com.financetracker.repositories.TransactionRepository;
+import com.financetracker.services.BudgetService;
+import com.financetracker.services.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +20,13 @@ import java.util.TreeMap;
 public class SearchServiceImpl implements SearchService {
 
     @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
     @Autowired
-    PlannedPaymentRepository plannedPaymentRepository;
+    private PlannedPaymentRepository plannedPaymentRepository;
 
     @Autowired
-    BudgetService budgetService;
+    private BudgetService budgetService;
 
     public Set<Transaction> getAllTransactionsByKeyword(String keyword) {
         return transactionRepository.findAllByDescriptionContaining(keyword);

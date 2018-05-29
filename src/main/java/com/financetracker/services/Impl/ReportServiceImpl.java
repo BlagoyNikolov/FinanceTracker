@@ -1,10 +1,13 @@
-package com.financetracker.services;
+package com.financetracker.services.Impl;
 
 import com.financetracker.model.Account;
 import com.financetracker.model.Category;
 import com.financetracker.model.PaymentType;
 import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
+import com.financetracker.services.AccountService;
+import com.financetracker.services.CategoryService;
+import com.financetracker.services.ReportService;
 import com.financetracker.util.DateConverters;
 import com.financetracker.util.PagingUtil;
 import com.financetracker.util.TransactionComparator;
@@ -23,10 +26,10 @@ public class ReportServiceImpl implements ReportService {
     public static final String ALL_TYPES = "All types";
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     public TreeSet<Transaction> getAllReportTransactions(User user, Set<Account> allAccounts) {
         TreeSet<Transaction> allTransactions = new TreeSet<>(new TransactionComparator());

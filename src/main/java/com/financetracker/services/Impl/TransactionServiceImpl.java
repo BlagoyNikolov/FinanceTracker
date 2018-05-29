@@ -1,4 +1,4 @@
-package com.financetracker.services;
+package com.financetracker.services.Impl;
 
 import com.financetracker.model.Account;
 import com.financetracker.model.Budget;
@@ -7,6 +7,10 @@ import com.financetracker.model.PaymentType;
 import com.financetracker.model.Transaction;
 import com.financetracker.model.User;
 import com.financetracker.repositories.TransactionRepository;
+import com.financetracker.services.AccountService;
+import com.financetracker.services.BudgetService;
+import com.financetracker.services.CategoryService;
+import com.financetracker.services.TransactionService;
 import com.financetracker.util.PagingUtil;
 import com.financetracker.util.TransactionComparator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.IntStream.range;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -40,9 +41,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private BudgetService budgetService;
-
-    @Autowired
-    private UserService userService;
 
     public List<Transaction> getAllTransactionsByAccountId(long accountId) {
         return transactionRepository.findByAccountAccountId(accountId);
